@@ -1,0 +1,9 @@
+ # consulo
+ .consulo
+ 
+# unity specific
+Library
+Temp
+
+# file system
+.directory
