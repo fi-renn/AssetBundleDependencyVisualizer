@@ -4,6 +4,12 @@
 # unity specific
 Library
 Temp
+*.sln
+*.userprefs
+*.csproj
 
 # file system
 .directory
+
+
+
