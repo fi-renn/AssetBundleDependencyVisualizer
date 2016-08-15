@@ -1,8 +1,11 @@
-﻿public enum EditorPositionBorder
+﻿namespace ChinchillaCoding.AssetBundleDependencyVisualizer
 {
-    Top,
-    Left,
-    Center,
-    Right,
-    Bottom,
+    public enum EditorPositionBorder
+    {
+        Top,
+        Left,
+        Center,
+        Right,
+        Bottom,
+    }
 }

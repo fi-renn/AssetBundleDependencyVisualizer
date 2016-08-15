@@ -2,53 +2,56 @@
 using UnityEditor;
 using System.Collections.Generic;
 
-public class NodeScrollPanel
+namespace ChinchillaCoding.AssetBundleDependencyVisualizer
 {
-    public event System.Action<int> WindowSelected;
-
-    #region member
-
-    protected NodeTestWindow parentWindow;
-    protected Rect WindowRect = new Rect (0, 0, 10000, 10000);
-    protected Vector2 scrollPosition;
-
-    #endregion
-
-    public NodeScrollPanel (NodeTestWindow parentWindow)
+    public class NodeScrollPanel
     {
-        this.parentWindow = parentWindow;
-    }
+        public event System.Action<int> WindowSelected;
 
-    public void Draw (Rect panelRect)
-    {
-        GUI.BeginGroup (this.WindowRect);
-        this.scrollPosition = GUI.BeginScrollView (panelRect, scrollPosition, this.WindowRect, true, true);
+        #region member
 
-        foreach (IEditorDrawable drawable in this.parentWindow.Lines)
+        protected AssetBundleDepVisWindow parentWindow;
+        protected Rect WindowRect = new Rect(0, 0, 10000, 10000);
+        protected Vector2 scrollPosition;
+
+        #endregion
+
+        public NodeScrollPanel(AssetBundleDepVisWindow parentWindow)
         {
-            drawable.Draw ();
+            this.parentWindow = parentWindow;
         }
 
-        parentWindow.BeginWindows ();
-        foreach (IEditorDrawable drawable in this.parentWindow.Windows)
+        public void Draw(Rect panelRect)
         {
-            drawable.Draw ();
+            GUI.BeginGroup(this.WindowRect);
+            this.scrollPosition = GUI.BeginScrollView(panelRect, scrollPosition, this.WindowRect, true, true);
+            
+            foreach (IEditorDrawable drawable in this.parentWindow.Lines)
+            {
+                drawable.Draw();
+            }
+            
+            parentWindow.BeginWindows();
+            foreach (IEditorDrawable drawable in this.parentWindow.Windows)
+            {
+                drawable.Draw();
+            }
+            parentWindow.EndWindows();
+            
+            GUI.EndScrollView();
+            GUI.EndGroup();
         }
-        parentWindow.EndWindows ();
 
-        GUI.EndScrollView ();
-        GUI.EndGroup ();
-    }
-
-    public void SelectIndex (int index)
-    {
-        if (index < 0)
+        public void SelectIndex(int index)
         {
-            // deselect
-            return;
+            if (index < 0)
+            {
+                // deselect
+                return;
+            }
+            
+            EditorNode node = this.parentWindow.Windows[index];
+            this.scrollPosition = node.GetPosition(EditorPositionBorder.Center);
         }
-
-        EditorNode node = this.parentWindow.Windows [index];
-        this.scrollPosition = node.GetPosition (EditorPositionBorder.Center);
     }
 }

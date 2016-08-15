@@ -1,0 +1,9 @@
+
+- get assetbundle data
+- basic bundle vis
+- advanced with positioning
+    - auto crop view
+- filter lists
+    - bundles
+    - assets
+    

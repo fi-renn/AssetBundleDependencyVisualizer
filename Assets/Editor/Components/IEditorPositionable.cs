@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IEditorPositionable
+namespace ChinchillaCoding.AssetBundleDependencyVisualizer
 {
-    Vector3 GetPosition (EditorPositionBorder border);
+    public interface IEditorPositionable
+    {
+        Vector3 GetPosition(EditorPositionBorder border);
+    }
 }

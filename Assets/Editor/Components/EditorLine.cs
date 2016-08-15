@@ -1,46 +1,49 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class EditorLine : IEditorDrawable
+namespace ChinchillaCoding.AssetBundleDependencyVisualizer
 {
-    protected IEditorPositionable start;
-
-    protected IEditorPositionable end;
-
-    protected Color color;
-
-
-    public EditorLine (IEditorPositionable start, IEditorPositionable end, Color color)
+    public class EditorLine : IEditorDrawable
     {
-        this.start = start;
-        this.end = end;
-        this.color = color;
-    }
+        protected IEditorPositionable start;
+        
+        protected IEditorPositionable end;
+        
+        protected Color color;
 
-    public void SetEndPoint (IEditorPositionable newEnd)
-    {
-        this.end = newEnd;
-    }
-
-    protected bool MemberAreValid
-    {
-        get
+        
+        public EditorLine(IEditorPositionable start, IEditorPositionable end, Color color)
         {
-            return start != null && end != null;
-        }
-    }
-
-    public virtual void Draw ()
-    {
-        if (!MemberAreValid)
-        {
-            return;
+            this.start = start;
+            this.end = end;
+            this.color = color;
         }
 
-        Vector3 startPos, endPos;
-        NodeUtils.GetBorderPoints (start, end, out startPos, out endPos);
+        public void SetEndPoint(IEditorPositionable newEnd)
+        {
+            this.end = newEnd;
+        }
 
-        Handles.color = this.color;
-        Handles.DrawLine (startPos, endPos);
+        protected bool MemberAreValid
+        {
+            get
+            {
+                return start != null && end != null;
+            }
+        }
+
+        public virtual void Draw()
+        {
+            if (!MemberAreValid)
+            {
+                return;
+            }
+            
+            Vector3 startPos, endPos;
+            NodeUtils.GetBorderPoints(start, end, out startPos, out endPos);
+            
+            Handles.color = this.color;
+            Handles.DrawLine(startPos, endPos);
+        }
     }
 }

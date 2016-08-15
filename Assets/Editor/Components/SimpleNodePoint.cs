@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
 
-public class SimpleNodePoint : IEditorPositionable
+namespace ChinchillaCoding.AssetBundleDependencyVisualizer
 {
-    protected Vector3 curPosition;
-
-
-    public SimpleNodePoint (Vector3 position)
+    public class SimpleNodePoint : IEditorPositionable
     {
-        this.curPosition = position;
-    }
+        protected Vector3 curPosition;
 
-    public void SetPosition (Vector3 position)
-    {
-        this.curPosition = position;
-    }
+        
+        public SimpleNodePoint(Vector3 position)
+        {
+            this.curPosition = position;
+        }
 
-    public Vector3 GetPosition (EditorPositionBorder border)
-    {
-        return this.curPosition;
+        public void SetPosition(Vector3 position)
+        {
+            this.curPosition = position;
+        }
+
+        public Vector3 GetPosition(EditorPositionBorder border)
+        {
+            return this.curPosition;
+        }
     }
 }

@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public interface IEditorDrawable 
+namespace ChinchillaCoding.AssetBundleDependencyVisualizer
 {
-    void Draw ();	
+    public interface IEditorDrawable
+    {
+        void Draw();
+    }
+    
 }
