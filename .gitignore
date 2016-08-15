@@ -8,6 +8,8 @@ Temp
 *.userprefs
 *.csproj
 
+ProjectSettings
+
 # file system
 .directory
 
