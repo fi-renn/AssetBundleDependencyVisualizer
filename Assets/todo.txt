@@ -1,9 +1,23 @@
+window priority:
+- top right menu
+    -> search
+- init loading
+    -> loading asset data
+    -> progressbar
+- side bar
+    -> draw list
+- filter
+    -> bundles, include assets, types[source, prefabs, textures, audio], hidden assets
+    -> filter popup
+    -> filter data
+- node window
+    -> base node drawing
+    -> draw asset bundle data
+    -> draw dependency
+    -> implement positioning
+    -> zoom
 
-- get assetbundle data
-- basic bundle vis
-- advanced with positioning
-    - auto crop view
-- filter lists
-    - bundles
-    - assets
-    
+
+- future stuff
+    -> dynamic ui with min and max size
+    -> anchor points with other elements
