@@ -9,6 +9,7 @@ Temp
 *.csproj
 
 ProjectSettings
+obj
 
 # file system
 .directory
