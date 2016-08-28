@@ -1,15 +1,15 @@
 window priority:
 - top right menu
     -> search
-- init loading
-    -> loading asset data
-    -> progressbar
+
 - side bar
     -> draw list
+
 - filter
     -> bundles, include assets, types[source, prefabs, textures, audio], hidden assets
     -> filter popup
     -> filter data
+
 - node window
     -> base node drawing
     -> draw asset bundle data

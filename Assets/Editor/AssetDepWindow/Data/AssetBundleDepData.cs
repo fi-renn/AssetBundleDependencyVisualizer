@@ -9,12 +9,12 @@ namespace GJP.AssetBundleDependencyVisualizer
         #region testing code
 
         [MenuItem ("Assets/Get Asset Bundle names")]
-        public static void GetNames()
+        public static void GetNames ()
         {
             var names = AssetDatabase.GetAllAssetBundleNames ();
             foreach (string name in names)
             {
-                System.Text.StringBuilder builder = new System.Text.StringBuilder();
+                System.Text.StringBuilder builder = new System.Text.StringBuilder ();
                 builder.AppendLine ("Assetbundle: " + name);
                 var paths = AssetDatabase.GetAssetPathsFromAssetBundle (name);
                 foreach (string path in paths)
@@ -35,7 +35,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         }
 
         [MenuItem ("Assets/Testing")]
-        public static void TestTypes()
+        public static void TestTypes ()
         {
             Object obj = AssetDatabase.LoadAssetAtPath<Object> ("Assets/Example/Prefab1.prefab");
             Object conky = AssetDatabase.LoadAssetAtPath<Object> ("Assets/Example/conky.png");
@@ -46,7 +46,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         }
 
         [MenuItem ("Assets/Build bundles")]
-        public static void BuildBundles()
+        public static void BuildBundles ()
         {
             BuildPipeline.BuildAssetBundles ("AssetBundles", BuildAssetBundleOptions.None, BuildTarget.StandaloneLinux64);
            
@@ -64,39 +64,51 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         #endregion
 
-        private AssetBundleDepData()
+        private AssetBundleDepData ()
         {
-            this.AssetBundles = new List<AssetBundleData>();
-            this.NameToBundle = new Dictionary<string, AssetBundleData>();
-            this.BundleNames = new List<string>();
-            this.BundledAssets = new List<AssetData>();
+            this.AssetBundles = new List<AssetBundleData> ();
+            this.NameToBundle = new Dictionary<string, AssetBundleData> ();
+            this.BundleNames = new List<string> ();
+            this.BundledAssets = new List<AssetData> ();
         }
 
         #region loading data
 
-        public static AssetBundleDepData ReadDataFromUnity()
+        public static AssetBundleDepData ReadDataFromUnity ()
         {
-            AssetBundleDepData result = new AssetBundleDepData();
+            AssetBundleDepData result = new AssetBundleDepData ();
             string[] allAssetBundles = AssetDatabase.GetAllAssetBundleNames ();
 
             // create nodes
-            foreach (string assetBundleName in allAssetBundles)
+            for (int i = 0; i < allAssetBundles.Length; ++i)
             {
-                AssetBundleData curBundle = result.GetOrCreateBundle (assetBundleName);
+                EditorUtility.DisplayProgressBar ("Reading asset bundle data",
+                    string.Format ("({0}/{1}) {2}", i, allAssetBundles.Length, allAssetBundles[i]),
+                    (float)i / allAssetBundles.Length);
 
-                result.FilterDependencies (curBundle);   
+                AssetBundleData curBundle = result.GetOrCreateBundle (allAssetBundles[i]);
 
-                curBundle.BundledAssets.Sort (CompareBundledAssets);
-            }                
+                try
+                {
+                    result.FilterDependencies (curBundle);  
+                    curBundle.BundledAssets.Sort (CompareBundledAssets);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogErrorFormat ("Can't load data for bundle {0}. {1}", allAssetBundles[i], e);
+                }
+
+            }           
+            EditorUtility.ClearProgressBar ();
             return result;
         }
 
-        private void FilterDependencies( AssetBundleData bundle )
+        private void FilterDependencies ( AssetBundleData bundle )
         {
             string[] pathsInBundle = AssetDatabase.GetAssetPathsFromAssetBundle (bundle.Name);
             string[] assetDeps = AssetDatabase.GetDependencies (pathsInBundle, false);
 
-            Queue<string> assetToCheck = new Queue<string>(assetDeps);
+            Queue<string> assetToCheck = new Queue<string> (assetDeps);
             while (assetToCheck.Count > 0)
             {
                 string assetPath = assetToCheck.Dequeue ();
@@ -111,12 +123,12 @@ namespace GJP.AssetBundleDependencyVisualizer
             }              
         }
 
-        private AssetBundleData GetOrCreateBundle( string bundleName )
+        private AssetBundleData GetOrCreateBundle ( string bundleName )
         {            
             AssetBundleData result;
             if (!this.NameToBundle.TryGetValue (bundleName, out result))
             {
-                result = new AssetBundleData(bundleName);
+                result = new AssetBundleData (bundleName);
                 this.AssetBundles.Add (result);
 
                 this.NameToBundle.Add (bundleName, result);
@@ -126,7 +138,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             return result;
         }
 
-        private bool AssignAsset( string path, AssetBundleData bundle )
+        private bool AssignAsset ( string path, AssetBundleData bundle )
         {
             bool result = false;
             string assignedBundleName = AssetImporter.GetAtPath (path).assetBundleName;
@@ -135,7 +147,7 @@ namespace GJP.AssetBundleDependencyVisualizer
                 // add to bundled
                 if (!bundle.ContainsBundledAsset (path))
                 {
-                    AssetData asset = new AssetData(path, bundle, string.IsNullOrEmpty (assignedBundleName));
+                    AssetData asset = new AssetData (path, bundle, string.IsNullOrEmpty (assignedBundleName));
                     bundle.BundledAssets.Add (asset);
                     this.BundledAssets.Add (asset);
 
@@ -155,7 +167,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             return result;
         }
 
-        private static int CompareBundledAssets( AssetData data1, AssetData data2 )
+        private static int CompareBundledAssets ( AssetData data1, AssetData data2 )
         {
             return data1.AssetType.CompareTo (data2.AssetType);
         }
@@ -164,9 +176,9 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         #region get logic
 
-        public List<AssetData> GetBundledAssets( AssetDataType filter )
+        public List<AssetData> GetBundledAssets ( AssetDataType filter )
         {
-            var result = new List<AssetData>();
+            var result = new List<AssetData> ();
 
             for (int i = 0; i < this.BundledAssets.Count; ++i)
             {
