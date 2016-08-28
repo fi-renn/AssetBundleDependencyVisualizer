@@ -4,10 +4,10 @@ using GJP.EditorToolkit;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
-    public class AssetBundleDepNodePanel : AEditorWindowPanel
+    public class AssetBundleDepNodePanel : AEditorWindowPanel<DependencyWindow>
     {
-        public AssetBundleDepNodePanel(EditorWindow parent, EditorWindowDimension dimension)
-            : base(parent, dimension)
+        public AssetBundleDepNodePanel(DependencyWindow parent, EditorWindowDimension dimension)
+            : base (parent, dimension )
         {            
         }
 

@@ -3,7 +3,7 @@ using GJP.EditorToolkit;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
-    public class AssetBundleDepMenuBar : AEditorMenuBar
+    public class AssetBundleDepMenuBar : AEditorMenuBar<DependencyWindow>
     {
         protected override Color DebugColor
         {
@@ -13,15 +13,14 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
-        public AssetBundleDepMenuBar (DependencyWindow parent, EditorWindowDimension percentageRect)
-            : base (parent, percentageRect)
+        public AssetBundleDepMenuBar(DependencyWindow parent, EditorWindowDimension percentageRect)
+            : base (parent, percentageRect )
         {
         }
 
-        protected override void AddButtons ()
+        protected override void AddButtons()
         {
-            DependencyWindow window = (DependencyWindow) this.ParentWindow;
-            AddDrawableToList(new GenericEditorMenuButton(window.RefreshBundleData, "Refresh"));
+            AddDrawable (new GenericEditorMenuButton(this.parentWindow.RefreshBundleData, "Refresh"));
             //TODO filter button
             //TODO zoom button
         }

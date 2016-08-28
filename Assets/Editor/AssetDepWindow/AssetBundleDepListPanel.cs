@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
-    public class AssetBundleDepListPanel : AEditorWindowPanel
+    public class AssetBundleDepListPanel : AEditorWindowPanel<DependencyWindow>
     {
-        public AssetBundleDepListPanel(EditorWindow parent, EditorWindowDimension dimension)
+        public AssetBundleDepListPanel(DependencyWindow parent, EditorWindowDimension dimension)
             : base(parent, dimension)
-        {
+        {     
             
         }
 
@@ -20,11 +20,8 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
-
         protected override void DrawContent()
-        {
-            
+        {            
         }
     }
 }
-

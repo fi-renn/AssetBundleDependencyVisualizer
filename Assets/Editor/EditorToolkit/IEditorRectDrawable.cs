@@ -4,7 +4,7 @@ namespace GJP.EditorToolkit
 {
     public interface IEditorRectDrawable
     {
-        Rect GetDimension( );
+        Vector2 GetDimension();
 
         void Draw( Rect drawRect );
     }

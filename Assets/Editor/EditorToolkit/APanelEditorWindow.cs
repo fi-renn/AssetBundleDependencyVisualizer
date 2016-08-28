@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace GJP.EditorToolkit
 {
-    public abstract class APanelEditorWindow : EditorWindow
+    public abstract class APanelEditorWindow<T> : EditorWindow where T : APanelEditorWindow<T>
     {
-        protected List<AEditorWindowPanel> panels = new List<AEditorWindowPanel> ();
+        protected List<AEditorWindowPanel<T>> panels = new List<AEditorWindowPanel<T>>();
 
         protected Rect oldPosition;
         [System.NonSerialized]
         private bool isSetup;
 
-        protected void OnGUI( )
+        protected void OnGUI()
         {
             if (!this.isSetup)
             {
@@ -29,24 +29,24 @@ namespace GJP.EditorToolkit
 
             for (int i = 0; i < panels.Count; i++)
             {
-                panels [i].Draw ();
+                panels[i].Draw ();
             }
 
             AdditonOnGUI ();
         }
 
-        protected virtual void AdditonOnGUI( )
+        protected virtual void AdditonOnGUI()
         {
         }
 
-        protected abstract void InitPanels( );
+        protected abstract void InitPanels();
 
-        protected void RecalculateLayout( )
+        protected void RecalculateLayout()
         {
             this.oldPosition = this.position;
             for (int i = 0; i < panels.Count; i++)
             {
-                panels [i].Recalculate ();
+                panels[i].Recalculate ();
             }
         }
     }

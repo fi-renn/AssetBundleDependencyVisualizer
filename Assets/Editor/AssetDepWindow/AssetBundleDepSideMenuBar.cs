@@ -3,27 +3,30 @@ using GJP.EditorToolkit;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
-    public class AssetBundleDepSideMenuBar : AEditorMenuBar
-    {
-        protected override Color DebugColor
-        {
-            get
-            {
-                return Color.cyan;
-            }
-        }
+	public class AssetBundleDepSideMenuBar : AEditorMenuBar<DependencyWindow>
+	{
+		protected GenericToolbarSearch search;
 
-        public AssetBundleDepSideMenuBar (DependencyWindow parent, EditorWindowDimension percentageRect)
-            : base (parent, percentageRect)
-        {
-        }
+		protected override Color DebugColor
+		{
+			get
+			{
+				return Color.cyan;
+			}
+		}
 
-        protected override void AddButtons ()
-        {
-            DependencyWindow window = (DependencyWindow) this.ParentWindow;
-            //TODO search box
-            // AddDrawableToList(new GenericEditorMenuButton(window.RefreshBundleData, "Refresh"));
-            //TODO filter button
-        }
-    }
+		public AssetBundleDepSideMenuBar ( DependencyWindow parent, EditorWindowDimension percentageRect )
+			: base (parent, percentageRect )
+		{			
+		}
+
+		protected override void AddButtons ()
+		{
+			this.search = new GenericToolbarSearch();
+			this.search.TextChanged += this.parentWindow.SidebarSearchTextHasChanged;
+			AddDrawable (this.search);
+
+			//TODO filter button
+		}
+	}
 }

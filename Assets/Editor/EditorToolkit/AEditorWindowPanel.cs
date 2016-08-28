@@ -3,23 +3,23 @@ using UnityEngine;
 
 namespace GJP.EditorToolkit
 {
-    public abstract class AEditorWindowPanel
+    public abstract class AEditorWindowPanel<T> where T : APanelEditorWindow<T>
     {
-        public EditorWindow ParentWindow;
         public bool DebugMode;
 
+        protected T parentWindow;
         protected EditorWindowDimension percentageRect;
         protected Rect drawRect;
 
         protected abstract Color DebugColor { get; }
 
-        protected AEditorWindowPanel( EditorWindow parent, EditorWindowDimension dimension )
+        protected AEditorWindowPanel(T parent, EditorWindowDimension dimension)
         {
-            this.ParentWindow = parent;
+            this.parentWindow = parent;
             this.percentageRect = dimension;
         }
 
-        public void Draw( )
+        public void Draw()
         {
             if (this.DebugMode)
             {
@@ -29,11 +29,11 @@ namespace GJP.EditorToolkit
             DrawContent ();
         }
 
-        protected abstract void DrawContent( );
+        protected abstract void DrawContent();
 
-        public void Recalculate( )
+        public void Recalculate()
         {
-            drawRect = this.percentageRect.CalculateDimension (this.ParentWindow.position);
+            drawRect = this.percentageRect.CalculateDimension (this.parentWindow.position);
         }
 
         public void SetDimension( EditorWindowDimension newdimension )
