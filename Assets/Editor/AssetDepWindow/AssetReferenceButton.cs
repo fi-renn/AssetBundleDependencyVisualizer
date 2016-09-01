@@ -28,7 +28,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             this.assetCallback = callback;
             this.guiContent = new GUIContent (assetData.PreviewString, assetData.Icon);
 
-            if (assetData.IsHidden)
+            if (assetData.AssetType.Matches (AssetDataType.Hidden))
             {
                 style.fontStyle = FontStyle.BoldAndItalic;
                 style.normal.textColor = new Color (0.3f, 0.46f, 0.6f);

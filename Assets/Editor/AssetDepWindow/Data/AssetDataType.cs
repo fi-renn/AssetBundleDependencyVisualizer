@@ -12,7 +12,11 @@ namespace GJP.AssetBundleDependencyVisualizer
         Texture = 1 << 4,
         Audio = 1 << 5,
         Bundle = 1 << 6,
-        Other = 1 << 7,
+        Script = 1 << 7,
+        Other = 1 << 8,
+
+        Included = 1 << 30,
+        Hidden = 1 << 31,
     }
 
     public static class AssetDataTypeExtensions

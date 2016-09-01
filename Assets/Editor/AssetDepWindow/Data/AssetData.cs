@@ -9,7 +9,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         public readonly Texture2D Icon;
         public readonly string BundleName;
         public readonly AssetBundleData Parent;
-        public readonly bool IsHidden;
+        private readonly bool IsHidden;
         public readonly AssetDataType AssetType;
         public readonly string Name;
 
@@ -50,6 +50,19 @@ namespace GJP.AssetBundleDependencyVisualizer
             else if (assetObj is AudioClip)
             {
                 result = AssetDataType.Audio;
+            }
+            else if (assetObj is MonoScript)
+            {
+                result = AssetDataType.Script;
+            }
+
+            if (this.IsHidden && result != AssetDataType.Script)
+            {
+                result |= AssetDataType.Hidden;
+            }
+            else
+            {
+                result |= AssetDataType.Included;
             }
 
             return result;
