@@ -6,54 +6,6 @@ namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleDepData
     {
-        #region testing code
-
-        [MenuItem ("Assets/Get Asset Bundle names")]
-        public static void GetNames ()
-        {
-            var names = AssetDatabase.GetAllAssetBundleNames ();
-            foreach (string name in names)
-            {
-                System.Text.StringBuilder builder = new System.Text.StringBuilder ();
-                builder.AppendLine ("Assetbundle: " + name);
-                var paths = AssetDatabase.GetAssetPathsFromAssetBundle (name);
-                foreach (string path in paths)
-                {
-                    builder.AppendLine ("\t" + path);
-                    var deps = AssetDatabase.GetDependencies (path, false);
-                    foreach (string depPath  in deps)
-                    {
-                        if (depPath == path)
-                            continue;
-
-                        AssetImporter importer = AssetImporter.GetAtPath (depPath);
-                        builder.AppendLine ("\t\t[" + importer.assetBundleName + "] " + depPath);                       
-                    }
-                }
-                Debug.Log (builder);
-            }
-        }
-
-        [MenuItem ("Assets/Testing")]
-        public static void TestTypes ()
-        {
-            Object obj = AssetDatabase.LoadAssetAtPath<Object> ("Assets/Example/Prefab1.prefab");
-            Object conky = AssetDatabase.LoadAssetAtPath<Object> ("Assets/Example/conky.png");
-
-            Debug.Log ("obj :" + obj.GetType ().Name);
-            Debug.Log ("conky: " + conky.GetType ().Name);
-
-        }
-
-        [MenuItem ("Assets/Build bundles")]
-        public static void BuildBundles ()
-        {
-            BuildPipeline.BuildAssetBundles ("AssetBundles", BuildAssetBundleOptions.None, BuildTarget.StandaloneLinux64);
-           
-        }
-
-        #endregion
-
         #region member
 
         public readonly List<AssetBundleData> AssetBundles;
