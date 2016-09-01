@@ -44,9 +44,9 @@ namespace GJP.AssetBundleDependencyVisualizer
                 UpdateFilterList ();
             }
 
-            Rect elementRect = this.drawRect;
+            Rect elementRect = new Rect ();
+            elementRect.width = this.drawRect.width;
             elementRect.height = ElementHeight;
-            elementRect.position = Vector2.zero;
 
             this.scrollPosition = GUI.BeginScrollView (this.drawRect, this.scrollPosition, this.scrollRect);
 
