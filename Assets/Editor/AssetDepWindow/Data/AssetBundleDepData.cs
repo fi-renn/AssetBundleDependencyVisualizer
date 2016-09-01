@@ -142,10 +142,9 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
 
             for (int i = 0; i < this.BundledAssets.Count; ++i)
-            {
-                
+            {                
                 AssetData element = this.BundledAssets[i];
-                if (!typeFilter.Matches (element) ||
+                if (!typeFilter.Filter (element) ||
                     (nameFilterActive && !element.Name.ToLower ().Contains (nameFilter)))
                 {
                     continue;
@@ -159,7 +158,7 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         public List<AssetBundleData> GetBundels (AssetDataType typeFilter, string nameFilter)
         {
-            if (!typeFilter.Matches (AssetDataType.Bundle))
+            if (!typeFilter.Contains (AssetDataType.Bundle))
             {
                 return new List<AssetBundleData> ();
             }

@@ -4,31 +4,40 @@ using System.Text;
 namespace GJP.AssetBundleDependencyVisualizer
 {
     [Flags]
-    public enum AssetDataType
+    public enum AssetDataType : uint
     {
-        Prefab = 1 << 1,
-        Mesh = 1 << 2,
-        Material = 1 << 3,
-        Texture = 1 << 4,
-        Audio = 1 << 5,
-        Bundle = 1 << 6,
-        Script = 1 << 7,
-        Other = 1 << 8,
+        Prefab = 1u << 1,
+        Mesh = 1u << 2,
+        Material = 1u << 3,
+        Texture = 1u << 4,
+        Audio = 1u << 5,
+        Bundle = 1u << 6,
+        Script = 1u << 7,
+        Other = 1u << 8,
 
-        Included = 1 << 30,
-        Hidden = 1 << 31,
+        Included = 1u << 30,
+        Hidden = 1u << 31,
+
+        Visiblity = 3u << 30,
     }
 
     public static class AssetDataTypeExtensions
     {
-        public static bool Matches (this AssetDataType filter, AssetData data)
-        {        
-            return (filter & data.AssetType) > 0;        
+        public static bool Filter (this AssetDataType filter, AssetData data)
+        {
+            AssetDataType typeFilter = filter & ~AssetDataType.Visiblity;
+            AssetDataType visFilter = filter & AssetDataType.Visiblity;
+            return typeFilter.Contains (data) && visFilter.Contains (data);
         }
 
-        public static bool Matches (this AssetDataType filter, AssetDataType other)
+        public static bool Contains (this AssetDataType filter, AssetData data)
         {
-            return (filter & other) > 0;        
+            return (data.AssetType & filter) != 0;
+        }
+
+        public static bool Contains (this AssetDataType filter, AssetDataType other)
+        {
+            return (other & filter) != 0;
         }
 
         public static string LogValue (this AssetDataType filter)

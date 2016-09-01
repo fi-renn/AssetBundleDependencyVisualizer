@@ -34,7 +34,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             get
             {
                 //TODO implement
-                return (AssetDataType)int.MaxValue;
+                return (AssetDataType)uint.MaxValue;
             }
             set
             {

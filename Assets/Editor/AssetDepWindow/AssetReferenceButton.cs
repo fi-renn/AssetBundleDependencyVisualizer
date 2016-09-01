@@ -20,6 +20,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             this.bundle = bundle;
             this.bundleCallback = callback;
             this.guiContent = new GUIContent (bundle.Name, EditorGUIUtility.FindTexture ("Folder Icon"));
+            this.style.alignment = TextAnchor.MiddleLeft;
         }
 
         public AssetReferenceButton ( AssetData assetData, Action<AssetData> callback )
@@ -28,10 +29,12 @@ namespace GJP.AssetBundleDependencyVisualizer
             this.assetCallback = callback;
             this.guiContent = new GUIContent (assetData.PreviewString, assetData.Icon);
 
-            if (assetData.AssetType.Matches (AssetDataType.Hidden))
+            this.style.alignment = TextAnchor.MiddleLeft;
+           
+            if (assetData.AssetType.Contains (AssetDataType.Hidden))
             {
-                style.fontStyle = FontStyle.BoldAndItalic;
-                style.normal.textColor = new Color (0.3f, 0.46f, 0.6f);
+                this.style.fontStyle = FontStyle.BoldAndItalic;
+                this.style.normal.textColor = new Color (0.3f, 0.46f, 0.6f);
             }
         }
 
@@ -54,7 +57,6 @@ namespace GJP.AssetBundleDependencyVisualizer
                     this.assetCallback (this.assetData);
                 }
             }
-
         }
 
         public int CompareTo (AssetReferenceButton other)
