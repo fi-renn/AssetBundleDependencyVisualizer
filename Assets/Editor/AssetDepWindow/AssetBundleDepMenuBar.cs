@@ -13,16 +13,29 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
-        public AssetBundleDepMenuBar(DependencyWindow parent, EditorWindowDimension percentageRect)
-            : base (parent, percentageRect )
+        public AssetBundleDepMenuBar ( DependencyWindow parent, EditorWindowDimension percentageRect )
+            : base (parent, percentageRect)
         {
         }
 
-        protected override void AddButtons()
+        protected override void AddButtons ()
         {
-            AddDrawable (new GenericEditorMenuButton(this.parentWindow.RefreshBundleData, "Refresh"));
+            AddDrawable (new GenericEditorMenuButton (this.parentWindow.RefreshBundleData, "Refresh"));
             //TODO filter button
             //TODO zoom button
+        }
+
+        public AssetDataType Filter
+        {
+            get
+            {
+                //TODO implement
+                return (AssetDataType)int.MaxValue;
+            }
+            set
+            {
+                
+            }
         }
     }
 }

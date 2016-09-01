@@ -6,12 +6,12 @@ namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleDepNodePanel : AEditorWindowPanel<DependencyWindow>
     {
-        public AssetBundleDepNodePanel(DependencyWindow parent, EditorWindowDimension dimension)
+        public AssetBundleDepNodePanel ( DependencyWindow parent, EditorWindowDimension dimension )
             : base (parent, dimension )
         {            
         }
 
-        protected override UnityEngine.Color DebugColor
+        protected override Color DebugColor
         {
             get
             {
@@ -19,9 +19,14 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
-        protected override void DrawContent()
+        protected override void DrawContent ()
         {
 
+            //TODO implement
+        }
+
+        public void ApplyFilter ( AssetDataType filter )
+        {
             //TODO implement
         }
     }

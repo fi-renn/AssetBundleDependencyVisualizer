@@ -1,10 +1,4 @@
 window priority:
-- top right menu
-    -> search
-
-- side bar
-    -> draw list
-
 - filter
     -> bundles, include assets, types[source, prefabs, textures, audio], hidden assets
     -> filter popup

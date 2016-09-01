@@ -13,13 +13,13 @@ namespace GJP.EditorToolkit
 
         protected abstract Color DebugColor { get; }
 
-        protected AEditorWindowPanel(T parent, EditorWindowDimension dimension)
+        protected AEditorWindowPanel ( T parent, EditorWindowDimension dimension )
         {
             this.parentWindow = parent;
             this.percentageRect = dimension;
         }
 
-        public void Draw()
+        public void Draw ()
         {
             if (this.DebugMode)
             {
@@ -29,14 +29,19 @@ namespace GJP.EditorToolkit
             DrawContent ();
         }
 
-        protected abstract void DrawContent();
+        protected abstract void DrawContent ();
 
-        public void Recalculate()
+        public void Recalculate ()
         {
-            drawRect = this.percentageRect.CalculateDimension (this.parentWindow.position);
+            this.drawRect = this.percentageRect.CalculateDimension (this.parentWindow.position);
+            OnRectRecalculated ();
         }
 
-        public void SetDimension( EditorWindowDimension newdimension )
+        protected virtual void OnRectRecalculated ()
+        {            
+        }
+
+        public void SetDimension (EditorWindowDimension newdimension)
         {
             this.percentageRect = newdimension;
             Recalculate ();

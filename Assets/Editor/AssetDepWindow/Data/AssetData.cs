@@ -6,22 +6,24 @@ namespace GJP.AssetBundleDependencyVisualizer
     public class AssetData
     {
         public readonly string Path;
-        public readonly Texture Icon;
+        public readonly Texture2D Icon;
         public readonly string BundleName;
         public readonly AssetBundleData Parent;
         public readonly bool IsHidden;
         public readonly AssetDataType AssetType;
+        public readonly string Name;
 
 
-        public AssetData (string path, AssetBundleData parent, bool isHidden)
+        public AssetData ( string path, AssetBundleData parent, bool isHidden )
         {
             this.Parent = parent;
             this.Path = path;
             this.IsHidden = isHidden;
 
-            this.Icon = AssetDatabase.GetCachedIcon (path);
+            this.Icon = (Texture2D)AssetDatabase.GetCachedIcon (path);
             this.BundleName = parent.Name;
             this.AssetType = FindAssetType ();
+            this.Name = System.IO.Path.GetFileNameWithoutExtension (path);
         }
 
         private AssetDataType FindAssetType ()
@@ -57,6 +59,15 @@ namespace GJP.AssetBundleDependencyVisualizer
         {
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<Object> (Path);
         }
+
+        public string PreviewString
+        {
+            get
+            {
+                return string.Format ("{0} ( {1} )", this.Name, this.BundleName);
+            }
+        }
+
     }
 }
 

@@ -103,12 +103,17 @@ namespace GJP.AssetBundleDependencyVisualizer
             return result;
         }
 
-        private void FilterDependencies ( AssetBundleData bundle )
+        private void FilterDependencies (AssetBundleData bundle)
         {
             string[] pathsInBundle = AssetDatabase.GetAssetPathsFromAssetBundle (bundle.Name);
             string[] assetDeps = AssetDatabase.GetDependencies (pathsInBundle, false);
 
-            Queue<string> assetToCheck = new Queue<string> (assetDeps);
+            Queue<string> assetToCheck = new Queue<string> (pathsInBundle);
+            foreach (var item in assetDeps)
+            {
+                assetToCheck.Enqueue (item);
+            }
+
             while (assetToCheck.Count > 0)
             {
                 string assetPath = assetToCheck.Dequeue ();
@@ -123,7 +128,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             }              
         }
 
-        private AssetBundleData GetOrCreateBundle ( string bundleName )
+        private AssetBundleData GetOrCreateBundle (string bundleName)
         {            
             AssetBundleData result;
             if (!this.NameToBundle.TryGetValue (bundleName, out result))
@@ -138,9 +143,8 @@ namespace GJP.AssetBundleDependencyVisualizer
             return result;
         }
 
-        private bool AssignAsset ( string path, AssetBundleData bundle )
+        private bool AssignAsset (string path, AssetBundleData bundle)
         {
-            bool result = false;
             string assignedBundleName = AssetImporter.GetAtPath (path).assetBundleName;
             if (string.IsNullOrEmpty (assignedBundleName) || (assignedBundleName == bundle.Name))
             {
@@ -152,7 +156,7 @@ namespace GJP.AssetBundleDependencyVisualizer
                     this.BundledAssets.Add (asset);
 
                     // continue search
-                    result = true;
+                    return true;
                 }
             }
             else
@@ -163,11 +167,11 @@ namespace GJP.AssetBundleDependencyVisualizer
                     bundle.ChildDependencies.Add (GetOrCreateBundle (assignedBundleName));
                 }
             }
-
-            return result;
+            // end found stop search
+            return false;
         }
 
-        private static int CompareBundledAssets ( AssetData data1, AssetData data2 )
+        private static int CompareBundledAssets (AssetData data1, AssetData data2)
         {
             return data1.AssetType.CompareTo (data2.AssetType);
         }
@@ -176,17 +180,54 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         #region get logic
 
-        public List<AssetData> GetBundledAssets ( AssetDataType filter )
+        public List<AssetData> GetBundledAssets (AssetDataType typeFilter, string nameFilter)
         {
             var result = new List<AssetData> ();
+            bool nameFilterActive = !string.IsNullOrEmpty (nameFilter);
+            if (nameFilterActive)
+            {
+                nameFilter = nameFilter.ToLower ();
+            }
 
             for (int i = 0; i < this.BundledAssets.Count; ++i)
             {
-                if (filter.Matches (this.BundledAssets[i]))
+                
+                AssetData element = this.BundledAssets[i];
+                if (!typeFilter.Matches (element) ||
+                    (nameFilterActive && !element.Name.ToLower ().Contains (nameFilter)))
                 {
-                    result.Add (this.BundledAssets[i]);
+                    continue;
+                }
+
+
+                result.Add (element);                  
+            }
+            return result;
+        }
+
+        public List<AssetBundleData> GetBundels (AssetDataType typeFilter, string nameFilter)
+        {
+            if (!typeFilter.Matches (AssetDataType.Bundle))
+            {
+                return new List<AssetBundleData> ();
+            }
+                
+            if (string.IsNullOrEmpty (nameFilter))
+            {
+                return new List<AssetBundleData> (this.AssetBundles);
+            }
+
+            nameFilter = nameFilter.ToLower ();
+
+            var result = new List<AssetBundleData> ();
+            for (int i = 0; i < this.AssetBundles.Count; ++i)
+            {
+                if (this.AssetBundles[i].Name.ToLower ().Contains (nameFilter))
+                {
+                    result.Add (this.AssetBundles[i]);
                 }
             }
+
             return result;
         }
 
