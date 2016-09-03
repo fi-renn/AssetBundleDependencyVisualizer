@@ -29,3 +29,10 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# kde
+.directory
+
+# assetbundles
+/[Aa]ssetBundles/
+
