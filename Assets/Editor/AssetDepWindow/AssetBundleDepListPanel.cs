@@ -20,7 +20,7 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         #endregion
 
-        public AssetBundleDepListPanel ( DependencyWindow parent, EditorWindowDimension dimension )
+        public AssetBundleDepListPanel (DependencyWindow parent, EditorWindowDimension dimension)
             : base (parent, dimension)
         {   
             this.filteredList = new List<AssetReferenceButton> ();
@@ -84,6 +84,8 @@ namespace GJP.AssetBundleDependencyVisualizer
 
             // calc rect
             UpdateScrollRect ();
+
+            this.needsUpdate = false;
         }
 
         private void UpdateScrollRect ()

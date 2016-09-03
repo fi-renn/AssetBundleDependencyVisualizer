@@ -5,6 +5,8 @@ namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleDepMenuBar : AEditorMenuBar<DependencyWindow>
     {
+        protected ToolbarFilterButton filter;
+
         protected override Color DebugColor
         {
             get
@@ -13,7 +15,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
-        public AssetBundleDepMenuBar ( DependencyWindow parent, EditorWindowDimension percentageRect )
+        public AssetBundleDepMenuBar (DependencyWindow parent, EditorWindowDimension percentageRect)
             : base (parent, percentageRect)
         {
         }
@@ -21,7 +23,9 @@ namespace GJP.AssetBundleDependencyVisualizer
         protected override void AddButtons ()
         {
             AddDrawable (new GenericEditorMenuButton (this.parentWindow.RefreshBundleData, "Refresh"));
-            //TODO filter button
+            this.filter = new ToolbarFilterButton ();
+            this.filter.FilterChanged += this.parentWindow.NodePanelFilterChanged ();
+            AddDrawable (this.filter);
             //TODO zoom button
         }
 
@@ -29,12 +33,11 @@ namespace GJP.AssetBundleDependencyVisualizer
         {
             get
             {
-                //TODO implement
-                return (AssetDataType)int.MaxValue;
+                return this.filter.Value;
             }
             set
             {
-                
+                this.filter.Value = value;
             }
         }
     }

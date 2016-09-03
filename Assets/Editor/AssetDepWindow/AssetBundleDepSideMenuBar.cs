@@ -6,6 +6,7 @@ namespace GJP.AssetBundleDependencyVisualizer
     public class AssetBundleDepSideMenuBar : AEditorMenuBar<DependencyWindow>
     {
         protected GenericToolbarSearch search;
+        protected ToolbarFilterButton filter;
 
         protected override Color DebugColor
         {
@@ -15,7 +16,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
-        public AssetBundleDepSideMenuBar ( DependencyWindow parent, EditorWindowDimension percentageRect )
+        public AssetBundleDepSideMenuBar (DependencyWindow parent, EditorWindowDimension percentageRect)
             : base (parent, percentageRect)
         {			
         }
@@ -23,22 +24,23 @@ namespace GJP.AssetBundleDependencyVisualizer
         protected override void AddButtons ()
         {
             this.search = new GenericToolbarSearch ();
-            this.search.TextChanged += this.parentWindow.SidebarSearchTextHasChanged;
+            this.search.TextChanged += this.parentWindow.SidebarSearchTextChanged;
             AddDrawable (this.search);
 
-            //TODO filter button
+            this.filter = new ToolbarFilterButton ();
+            this.filter.FilterChanged += this.parentWindow.SidebarFilterChanged;
+            AddDrawable (this.filter);
         }
 
         public AssetDataType Filter
         {
             get
-            {
-                //TODO implement
-                return (AssetDataType)uint.MaxValue;
+            {                
+                return this.filter.Value;
             }
             set
             {
-                
+                this.filter.Value = value;
             }
         }
 

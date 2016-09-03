@@ -93,25 +93,25 @@ namespace GJP.AssetBundleDependencyVisualizer
             this.nodePanel.ApplyFilter (this.menuBarNode.Filter);
         }
 
-        public void SidebarSearchTextHasChanged (string newText)
+        public void SidebarSearchTextChanged (string newText)
         {
             Debug.Log ("Sidebar search: " + newText);
             this.listPanel.ApplyNameFilter (newText);
         }
 
-        public void SidebarFilterHasChanged (AssetDataType newFilter)
+        public void SidebarFilterChanged (AssetDataType newFilter)
         {
             Debug.Log ("Sidebar filter: " + newFilter.LogValue ());
             this.listPanel.ApplyTypeFilter (newFilter);
         }
 
-        public void NodePanelFilterHasChanged (AssetDataType newFilter)
+        public void NodePanelFilterChanged (AssetDataType newFilter)
         {
             Debug.Log ("Nodes filter: " + newFilter.LogValue ());
             //TODO implement
         }
 
-        public void NodePanelZoomHasChanged (float value)
+        public void NodePanelZoomLevelChanged (float value)
         {
             Debug.Log ("Changed zoom to " + value);
             //TODO implement

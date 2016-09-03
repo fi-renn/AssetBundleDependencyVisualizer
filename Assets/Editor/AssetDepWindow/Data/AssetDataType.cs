@@ -1,32 +1,57 @@
 ﻿using System;
 using System.Text;
+using UnityEngine;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
     [Flags]
-    public enum AssetDataType : uint
+    public enum AssetDataType : int
     {
-        Prefab = 1u << 1,
-        Mesh = 1u << 2,
-        Material = 1u << 3,
-        Texture = 1u << 4,
-        Audio = 1u << 5,
-        Bundle = 1u << 6,
-        Script = 1u << 7,
-        Other = 1u << 8,
+        Prefab = 1 << 0,
+        Mesh = 1 << 1,
+        Material = 1 << 2,
+        Texture = 1 << 3,
+        Audio = 1 << 4,
+        Bundle = 1 << 5,
+        Script = 1 << 6,
+        Other = 1 << 7,
 
-        Included = 1u << 30,
-        Hidden = 1u << 31,
+        Included = 1 << 8,
+        Hidden = 1 << 9,
+    }
 
-        Visiblity = 3u << 30,
+    public static class AssetDataTypeUtility
+    {
+        public const AssetDataType Visiblity = AssetDataType.Included | AssetDataType.Hidden;
+
+        public const AssetDataType DefaultFilter = AssetDataType.Prefab | AssetDataType.Mesh |
+                                                   AssetDataType.Texture | AssetDataType.Other |
+                                                   AssetDataType.Included | AssetDataType.Hidden;
+
+        public static AssetDataType EnsureVisiblity (AssetDataType filter, AssetDataType previousValue)
+        {
+            var visFilter = filter & Visiblity;
+            if (visFilter == 0)
+            {
+                if (previousValue.Contains (AssetDataType.Hidden))
+                {
+                    filter |= AssetDataType.Included;
+                }
+                else
+                {
+                    filter |= AssetDataType.Hidden;
+                }
+            } 
+            return filter;
+        }
     }
 
     public static class AssetDataTypeExtensions
     {
         public static bool Filter (this AssetDataType filter, AssetData data)
         {
-            AssetDataType typeFilter = filter & ~AssetDataType.Visiblity;
-            AssetDataType visFilter = filter & AssetDataType.Visiblity;
+            AssetDataType typeFilter = filter & ~AssetDataTypeUtility.Visiblity;
+            AssetDataType visFilter = filter & AssetDataTypeUtility.Visiblity;
             return typeFilter.Contains (data) && visFilter.Contains (data);
         }
 

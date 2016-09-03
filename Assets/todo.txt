@@ -1,8 +1,6 @@
 window priority:
-- filter
+- filter (currently bug in the linux editor)
     -> bundles, include assets, types[source, prefabs, textures, audio], hidden assets
-    -> filter popup
-    -> filter data
 
 - node window
     -> base node drawing
