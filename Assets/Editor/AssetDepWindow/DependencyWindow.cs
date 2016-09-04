@@ -12,6 +12,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         public static void OpenForEditor ()
         {
             DependencyWindow window = EditorWindow.GetWindow<DependencyWindow> ();
+            window.titleContent = new GUIContent ("Asset Deps");
         }
 
         #endregion
@@ -54,7 +55,6 @@ namespace GJP.AssetBundleDependencyVisualizer
                 Width = 0.7f,
             };
             this.nodePanel = new AssetBundleDepNodePanel (this, nodePanelDimension);
-            this.nodePanel.DebugMode = true;
             this.panels.Add (this.nodePanel);
 
             // menu bar
@@ -108,7 +108,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         public void NodePanelFilterChanged (AssetDataType newFilter)
         {
             Debug.Log ("Nodes filter: " + newFilter.LogValue ());
-            //TODO implement
+            this.nodePanel.ApplyFilter (newFilter);
         }
 
         public void NodePanelZoomLevelChanged (float value)
@@ -120,7 +120,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         public void SidebarBundleClicked (AssetBundleData data)
         {
             Debug.Log ("Show data of " + data.Name);
-            //TODO implement
+            this.nodePanel.SetBundleToFocus (data);
         }
 
         #endregion

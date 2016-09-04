@@ -15,7 +15,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         private GUIStyle style = new GUIStyle (GUI.skin.button);
         private GUIContent guiContent;
 
-        public AssetReferenceButton ( AssetBundleData bundle, Action<AssetBundleData> callback )
+        public AssetReferenceButton (AssetBundleData bundle, Action<AssetBundleData> callback)
         {
             this.bundle = bundle;
             this.bundleCallback = callback;
@@ -23,7 +23,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             this.style.alignment = TextAnchor.MiddleLeft;
         }
 
-        public AssetReferenceButton ( AssetData assetData, Action<AssetData> callback )
+        public AssetReferenceButton (AssetData assetData, Action<AssetData> callback)
         {
             this.assetData = assetData;
             this.assetCallback = callback;

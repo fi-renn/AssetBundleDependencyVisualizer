@@ -1,14 +1,21 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using GJP.EditorToolkit;
+using System.Collections.Generic;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
-    public class AssetBundleDepNodePanel : AEditorWindowPanel<DependencyWindow>
+    public class AssetBundleDepNodePanel : ANodeEditorPanel<DependencyWindow,
+                                            AssetBundleNode, TreeNodeGrouper>
     {
-        public AssetBundleDepNodePanel ( DependencyWindow parent, EditorWindowDimension dimension )
-            : base (parent, dimension )
-        {            
+        private readonly AssetBundleNodeFactory factory;
+        private AssetDataType filter;
+        private AssetBundleData curBundle;
+
+
+        public AssetBundleDepNodePanel (DependencyWindow parent, EditorWindowDimension dimension)
+            : base (parent, dimension)
+        {      
+            this.factory = new AssetBundleNodeFactory ();
         }
 
         protected override Color DebugColor
@@ -19,16 +26,28 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
-        protected override void DrawContent ()
-        {
+        #region interface to window
 
-            //TODO implement
+        public void ApplyFilter (AssetDataType filter)
+        {
+            this.filter = filter;
+            for (int i = 0; i < this.nodes.Count; ++i)
+            {
+                this.nodes[i].ApplyFilter (filter);
+            }
         }
 
-        public void ApplyFilter ( AssetDataType filter )
+        public void SetBundleToFocus (AssetBundleData bundle)
         {
-            //TODO implement
+            if (this.curBundle == bundle)
+            {
+                return;
+            }
+            this.curBundle = bundle;
+
+            ApplyNewNodes (factory.GetNodes (bundle, this.filter));
         }
+
+        #endregion
     }
-}
-
+}  

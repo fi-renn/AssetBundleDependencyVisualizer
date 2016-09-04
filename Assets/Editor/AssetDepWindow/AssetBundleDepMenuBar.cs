@@ -24,7 +24,8 @@ namespace GJP.AssetBundleDependencyVisualizer
         {
             AddDrawable (new GenericEditorMenuButton (this.parentWindow.RefreshBundleData, "Refresh"));
             this.filter = new ToolbarFilterButton ();
-            this.filter.FilterChanged += this.parentWindow.NodePanelFilterChanged ();
+            this.filter.Value = (AssetDataType)int.MaxValue; // start with all on
+            this.filter.FilterChanged += this.parentWindow.NodePanelFilterChanged;
             AddDrawable (this.filter);
             //TODO zoom button
         }
