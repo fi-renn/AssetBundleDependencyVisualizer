@@ -5,8 +5,9 @@ namespace GJP.EditorToolkit
 {
     public abstract class AEditorNode : IEditorPositionable, IEditorDrawable
     {
-        protected const float HeaderSizeY = 30f;
+        protected const float HeaderSizeY = 25f;
         protected const float MinWidth = 150f;
+        protected const float Margin = 5f;
 
         #region member
 
@@ -15,6 +16,7 @@ namespace GJP.EditorToolkit
         protected GUIStyle style;
 
         protected Rect drawRect;
+        private Rect nodeRect;
 
         //public readonly List<object> Dependencies;
 
@@ -29,7 +31,7 @@ namespace GJP.EditorToolkit
 
         public void Draw ()
         {
-            GUI.Window (this.ControlId, this.drawRect, DrawNode, this.title, this.style);
+            GUI.Window (this.ControlId, this.nodeRect, DrawNode, this.title, this.style);
 
             //for (int i = 0; i < this.Dependencies.Count; ++i)
             {
@@ -44,25 +46,38 @@ namespace GJP.EditorToolkit
         public void RecalcSize ()
         {
             Vector2 contentSize = CalcSize ();
-            contentSize.y += HeaderSizeY;
             if (contentSize.x < MinWidth)
             {
                 contentSize.x = MinWidth;
             }
-            this.drawRect.size = contentSize;
+
+            // update rect for implementation
+            this.drawRect = new Rect (
+                new Vector2 (Margin, HeaderSizeY),
+                contentSize);
+
+            // add header and margins to own size
+            contentSize.y += HeaderSizeY + Margin;
+            contentSize.x += 2f * Margin;
+
+            this.nodeRect.size = contentSize;
         }
 
         public Vector2 Position
         {
-            get { return this.drawRect.position; }
-            set { this.drawRect.position = value; }
+            get { return this.nodeRect.position; }
+            set { this.nodeRect.position = value; }
         }
 
+        public Vector2 GetSize ()
+        {
+            return this.nodeRect.size;
+        }
 
         public Vector2 GetPosition (EditorWindowAnchor border)
         {
             //TODO implement
-            return this.drawRect.position;
+            return this.nodeRect.position;
             /*
             Vector2 rectCenter = this.currentRect.center;
             Vector3 result = new Vector3(rectCenter.x, rectCenter.y);

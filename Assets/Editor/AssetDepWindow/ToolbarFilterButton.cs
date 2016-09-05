@@ -13,7 +13,7 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         private Vector2 size;
         private GUIStyle guiStyle;
-
+        private const float Width = 50f;
 
         public ToolbarFilterButton ()
         {
@@ -50,7 +50,7 @@ namespace GJP.AssetBundleDependencyVisualizer
         private void UpdateSize ()
         {
             this.size = this.guiStyle.CalcSize (GUIContent.none);
-            this.size.x += 45f;
+            this.size.x += Width;
         }
     }
 }

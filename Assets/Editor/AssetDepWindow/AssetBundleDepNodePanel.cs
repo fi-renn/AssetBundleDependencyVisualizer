@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using GJP.EditorToolkit;
-using System.Collections.Generic;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
@@ -45,7 +44,12 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
             this.curBundle = bundle;
 
-            ApplyNewNodes (factory.GetNodes (bundle, this.filter));
+            ApplyNewNodes (factory.GetNodes (bundle, this.filter, AssetClicked));
+        }
+
+        private void AssetClicked (AssetData data)
+        {
+            data.SelectAsset ();
         }
 
         #endregion
