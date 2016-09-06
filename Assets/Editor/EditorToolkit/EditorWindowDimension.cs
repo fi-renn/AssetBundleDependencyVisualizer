@@ -15,28 +15,29 @@ namespace GJP.EditorToolkit
         public bool OffsetXIsFixed;
         public bool OffsetYIsFixed;
 
-        public Rect CalculateDimension( Rect parentRect )
+        public Rect CalculateDimension (Rect parentRect)
         {
             // values for the rect
             Vector2 position, size;
 
             size = new Vector2 (
-                    this.WidthIsFixed ? this.Width : parentRect.width * this.Width,
-                    this.HeightIsFixed ? this.Height : parentRect.height * this.Height
+                this.WidthIsFixed ? this.Width : parentRect.width * this.Width,
+                this.HeightIsFixed ? this.Height : parentRect.height * this.Height
             );
 
+            // TODO fix check for bounds
             GetPosition (ref parentRect, ref size, out position);
 
             // top left, width, height
             return new Rect (position, size);
         }
 
-        private void GetPosition( ref Rect parent, ref Vector2 size, out Vector2 offset )
+        private void GetPosition (ref Rect parent, ref Vector2 size, out Vector2 offset)
         {
             // get the general offset to the ankor
             offset = new Vector2 (
-                    this.OffsetXIsFixed ? this.OffsetX : parent.width * this.OffsetX,
-                    this.OffsetYIsFixed ? this.OffsetY : parent.height * this.OffsetY
+                this.OffsetXIsFixed ? this.OffsetX : parent.width * this.OffsetX,
+                this.OffsetYIsFixed ? this.OffsetY : parent.height * this.OffsetY
             );
 
             Vector2 spaceToWindow = new Vector2 (parent.width - size.x, parent.height - size.y);

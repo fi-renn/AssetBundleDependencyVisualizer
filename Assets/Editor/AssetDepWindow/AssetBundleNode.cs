@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using GJP.EditorToolkit;
-using UnityEditor;
+using System;
 using System.Collections.Generic;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleNode : AEditorNode
     {
-        public event System.Action<AssetData> AssetClicked;
+        public event Action<AssetData> AssetClicked;
 
         private AssetBundleData data;
         private AssetDataType filter;
@@ -18,9 +18,8 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         private const float ButtonHeight = 20f;
 
-        //TODO support coloring
-        public AssetBundleNode (int controlId, AssetBundleData data, AssetDataType filter)
-            : base (controlId, data.Name, new GUIStyle ("flow node 1"))
+        public AssetBundleNode (int controlId, AssetBundleData data, AssetDataType filter, AssetBundleNoteRelationship relation)
+            : base (controlId, data.Name)
         { 
             this.data = data;
             this.filter = filter;
@@ -29,6 +28,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             this.assetStyle = new GUIStyle ("button");
 
             UpdateDrawList ();
+            SetRelationShip (relation);
         }
 
         protected override void DrawNode (int windowId)
@@ -85,6 +85,29 @@ namespace GJP.AssetBundleDependencyVisualizer
                     this.filteredAssets.Add (asset);
                 }
             }
+        }
+
+        public void SetRelationShip (AssetBundleNoteRelationship relation)
+        {
+            switch (relation)
+            {
+                case AssetBundleNoteRelationship.Parent:
+                    this.style = new GUIStyle ("flow node 0");
+                    break;
+
+                case AssetBundleNoteRelationship.Selected:
+                    this.style = new GUIStyle ("flow node 5");
+                    break;
+
+                case AssetBundleNoteRelationship.Child:
+                    this.style = new GUIStyle ("flow node 2");
+                    break;
+            }
+        }
+
+        public override string ToString ()
+        {
+            return this.data.Name;
         }
     }
 }

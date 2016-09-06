@@ -22,11 +22,12 @@ namespace GJP.EditorToolkit
 
         #endregion
 
-        protected AEditorNode (int controlId, string title, GUIStyle style)
+        protected AEditorNode (int controlId, string title)
         {
             this.ControlId = controlId;
             this.title = title;
-            this.style = style;
+            this.style = new GUIStyle ("flow node 0");
+            this.nodeRect = new Rect ();
         }
 
         public void Draw ()
@@ -63,10 +64,22 @@ namespace GJP.EditorToolkit
             this.nodeRect.size = contentSize;
         }
 
-        public Vector2 Position
+        public Vector2 TopLeftPosition
         {
             get { return this.nodeRect.position; }
             set { this.nodeRect.position = value; }
+        }
+
+        public Vector2 CenterPosition
+        {
+            get
+            {
+                return this.nodeRect.position + (this.nodeRect.size * 0.5f);
+            }
+            set
+            {
+                this.nodeRect.position = (value - this.nodeRect.size * 0.5f);
+            }
         }
 
         public Vector2 GetSize ()
@@ -76,32 +89,50 @@ namespace GJP.EditorToolkit
 
         public Vector2 GetPosition (EditorWindowAnchor border)
         {
-            //TODO implement
-            return this.nodeRect.position;
-            /*
-            Vector2 rectCenter = this.currentRect.center;
-            Vector3 result = new Vector3(rectCenter.x, rectCenter.y);
+            Vector2 size = this.nodeRect.size;
+            Vector2 halfSize = size * 0.5f;
+
+            Vector2 result = this.nodeRect.position;
             switch (border)
             {
-                case EditorPositionBorder.Top:
-                    result.y += this.currentRect.height;
+                case EditorWindowAnchor.TopLeft:
                     break;
 
-                case EditorPositionBorder.Left:
-                    result.x -= this.currentRect.width;
+                case EditorWindowAnchor.Top:
+                    result.x += halfSize.x;
                     break;
 
-                case EditorPositionBorder.Right:
-                    result.x += this.currentRect.width;
+                case EditorWindowAnchor.TopRight:
+                    result.x += size.x;
                     break;
 
-                case EditorPositionBorder.Bottom:
-                    result.y -= this.currentRect.height;
-                    break;           
+                case EditorWindowAnchor.Left:
+                    result.y += halfSize.y;
+                    break;
+
+                case EditorWindowAnchor.Center:
+                    result += halfSize;
+                    break;
+
+                case EditorWindowAnchor.Right:
+                    result.y += halfSize.y;
+                    result.x += size.x;
+                    break;
+
+                case EditorWindowAnchor.BottomLeft:
+                    result.y += size.y;
+                    break;
+
+                case EditorWindowAnchor.Bottom:
+                    result.y += size.y;
+                    result.x += halfSize.x;
+                    break;
+
+                case EditorWindowAnchor.BottomRight:
+                    result += size;
+                    break;
             }
-
             return result;
-            */
         }
     }
 }

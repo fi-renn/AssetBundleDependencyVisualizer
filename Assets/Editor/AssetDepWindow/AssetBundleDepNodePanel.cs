@@ -4,12 +4,11 @@ using GJP.EditorToolkit;
 namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleDepNodePanel : ANodeEditorPanel<DependencyWindow,
-                                            AssetBundleNode, TreeNodeGrouper>
+                                            AssetBundleNode>
     {
         private readonly AssetBundleNodeFactory factory;
         private AssetDataType filter;
         private AssetBundleData curBundle;
-
 
         public AssetBundleDepNodePanel (DependencyWindow parent, EditorWindowDimension dimension)
             : base (parent, dimension)
@@ -25,14 +24,20 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
         }
 
+        protected override void OnRectRecalculated ()
+        {
+            base.OnRectRecalculated ();
+            RefreshNodes ();
+        }
+
         #region interface to window
 
         public void ApplyFilter (AssetDataType filter)
         {
-            this.filter = filter;
-            for (int i = 0; i < this.nodes.Count; ++i)
+            if (this.filter != filter)
             {
-                this.nodes[i].ApplyFilter (filter);
+                this.filter = filter;  
+                RefreshNodes ();
             }
         }
 
@@ -44,7 +49,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             }
             this.curBundle = bundle;
 
-            ApplyNewNodes (factory.GetNodes (bundle, this.filter, AssetClicked));
+            RefreshNodes ();
         }
 
         private void AssetClicked (AssetData data)
@@ -53,5 +58,10 @@ namespace GJP.AssetBundleDependencyVisualizer
         }
 
         #endregion
+
+        private void RefreshNodes ()
+        {
+            ApplyNewNodes (factory.GetNodes (this.curBundle, this.filter, AssetClicked, this.drawRect.center));              
+        }
     }
 }  

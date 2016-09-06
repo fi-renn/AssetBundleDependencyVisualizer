@@ -31,7 +31,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             AssetBundleDepData result = new AssetBundleDepData ();
             string[] allAssetBundles = AssetDatabase.GetAllAssetBundleNames ();
 
-            // create nodes
+            // create nodes with childs
             for (int i = 0; i < allAssetBundles.Length; ++i)
             {
                 EditorUtility.DisplayProgressBar ("Reading asset bundle data",
@@ -50,7 +50,21 @@ namespace GJP.AssetBundleDependencyVisualizer
                     Debug.LogErrorFormat ("Can't load data for bundle {0}. {1}", allAssetBundles[i], e);
                 }
 
-            }           
+            }
+
+            // set parent deps
+            for (int i = 0; i < result.AssetBundles.Count; ++i)
+            {
+                EditorUtility.DisplayProgressBar ("Set parent dependencies for ",
+                    string.Format ("({0}/{1}) {2}", i, result.AssetBundles.Count, result.AssetBundles[i].Name),
+                    (float)i / result.AssetBundles.Count);
+
+                foreach (var child in result.AssetBundles[i].ChildDependencies)
+                {
+                    child.ParentDependencies.Add (result.AssetBundles[i]);
+                }
+            }
+
             EditorUtility.ClearProgressBar ();
             return result;
         }

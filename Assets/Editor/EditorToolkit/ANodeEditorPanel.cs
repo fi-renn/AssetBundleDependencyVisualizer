@@ -4,14 +4,12 @@ using System.Collections.Generic;
 
 namespace GJP.EditorToolkit
 {
-    public abstract class ANodeEditorPanel<P,N, S> : AEditorWindowPanel<P> 
+    public abstract class ANodeEditorPanel<P,N> : AEditorWindowPanel<P> 
         where P : APanelEditorWindow<P>
         where N : AEditorNode
-        where S : IEditorNodeGrouper, new()
     {
         protected Texture2D background;
         protected List<N> nodes;
-        protected S grouper;
         protected Vector2 scrollPosition;
 
         private Rect scrollRect;
@@ -23,7 +21,6 @@ namespace GJP.EditorToolkit
             this.background = AssetDatabase.LoadAssetAtPath<Texture2D> ("Assets/Editor/background.png");
             this.background.wrapMode = TextureWrapMode.Repeat;
             this.nodes = new List<N> ();
-            this.grouper = new S ();
         }
 
         protected override void DrawContent ()
@@ -34,7 +31,7 @@ namespace GJP.EditorToolkit
                 GUI.DrawTextureWithTexCoords (this.drawRect, this.background, texRect);
             }
 
-            this.scrollPosition = GUI.BeginScrollView (this.drawRect, this.scrollPosition, this.scrollRect);
+            this.scrollPosition = GUI.BeginScrollView (this.drawRect, this.scrollPosition, this.scrollRect, true, true);
 
             this.parentWindow.BeginWindows ();
             for (int i = 0; i < this.nodes.Count; ++i)
@@ -49,13 +46,13 @@ namespace GJP.EditorToolkit
         protected void ApplyNewNodes (List<N> newNodes)
         {
             this.nodes.Clear ();
-            this.scrollRect = this.grouper.GroupNodes (newNodes);
             this.nodes.AddRange (newNodes);
+            this.scrollRect = NodeUtils.PutNodesOnRect (this.nodes);
         }
 
-        protected void GroupNodes ()
+        protected void UpdateScrollRect ()
         {
-            this.scrollRect = this.grouper.GroupNodes (this.nodes);
+            this.scrollRect = NodeUtils.PutNodesOnRect (this.nodes);
         }
 
         protected override void OnRectRecalculated ()

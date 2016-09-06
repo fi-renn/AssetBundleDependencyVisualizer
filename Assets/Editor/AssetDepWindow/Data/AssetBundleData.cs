@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
@@ -8,11 +7,11 @@ namespace GJP.AssetBundleDependencyVisualizer
         //TODO docu
         public string Name;
 
-        public List<AssetData> BundledAssets;
+        public readonly List<AssetData> BundledAssets;
 
-        public List<AssetBundleData> ChildDependencies;
+        public readonly List<AssetBundleData> ChildDependencies;
 
-        public List<AssetBundleData> ParentDependencies;
+        public readonly List<AssetBundleData> ParentDependencies;
 
         public AssetBundleData (string name)
         {

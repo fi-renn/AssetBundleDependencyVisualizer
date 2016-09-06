@@ -88,6 +88,7 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         public void RefreshBundleData ()
         {
+            //TODO fix me
             this.Data = AssetBundleDepData.ReadDataFromUnity ();
             this.listPanel.ApplyTypeFilter (this.menuBarList.Filter);
             this.nodePanel.ApplyFilter (this.menuBarNode.Filter);
@@ -95,19 +96,16 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         public void SidebarSearchTextChanged (string newText)
         {
-            Debug.Log ("Sidebar search: " + newText);
             this.listPanel.ApplyNameFilter (newText);
         }
 
         public void SidebarFilterChanged (AssetDataType newFilter)
         {
-            Debug.Log ("Sidebar filter: " + newFilter.LogValue ());
             this.listPanel.ApplyTypeFilter (newFilter);
         }
 
         public void NodePanelFilterChanged (AssetDataType newFilter)
         {
-            Debug.Log ("Nodes filter: " + newFilter.LogValue ());
             this.nodePanel.ApplyFilter (newFilter);
         }
 
@@ -119,7 +117,6 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         public void SidebarBundleClicked (AssetBundleData data)
         {
-            Debug.Log ("Show data of " + data.Name);
             this.nodePanel.SetBundleToFocus (data);
         }
 
