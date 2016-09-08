@@ -28,8 +28,9 @@ namespace GJP.EditorToolkit
             // TODO fix check for bounds
             GetPosition (ref parentRect, ref size, out position);
 
-            // top left, width, height
-            return new Rect (position, size);
+            Rect result = new Rect (position, size);
+            ClampToParent (parentRect, ref result);
+            return result;
         }
 
         private void GetPosition (ref Rect parent, ref Vector2 size, out Vector2 offset)
@@ -86,6 +87,39 @@ namespace GJP.EditorToolkit
                     offset.y += spaceToWindow.y;
                     break;
             }
+        }
+
+        private void ClampToParent (Rect parent, ref Rect selfRect)
+        {           
+            // clamp from left and top
+            Vector2 newPos = selfRect.position;
+            Vector2 newSize = selfRect.size;
+
+            if (selfRect.xMin < 0f)
+            {
+                newPos.x = 0 - selfRect.xMin;
+            }
+            if (selfRect.yMin < 0f)
+            {
+                newPos.y = 0 - selfRect.xMin;
+            }
+
+            newSize -= selfRect.position - newPos;
+            selfRect.position = newPos;
+            selfRect.size = newSize;          
+
+            // clamp size from right and bottom
+            Vector2 parentSize = parent.size;
+            newSize = selfRect.size;
+            if (parentSize.x < selfRect.xMax)
+            {
+                newSize.x += parentSize.x - selfRect.xMax;
+            }
+            if (parentSize.y < selfRect.yMax)
+            {
+                newSize.y += parentSize.y - selfRect.yMax;
+            } 
+            selfRect.size = newSize;
         }
     }
 }

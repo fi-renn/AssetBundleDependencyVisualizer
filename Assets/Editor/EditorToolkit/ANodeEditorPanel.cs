@@ -31,7 +31,7 @@ namespace GJP.EditorToolkit
                 GUI.DrawTextureWithTexCoords (this.drawRect, this.background, texRect);
             }
 
-            this.scrollPosition = GUI.BeginScrollView (this.drawRect, this.scrollPosition, this.scrollRect, true, true);
+            this.scrollPosition = GUI.BeginScrollView (this.drawRect, this.scrollPosition, this.scrollRect);
 
             this.parentWindow.BeginWindows ();
             for (int i = 0; i < this.nodes.Count; ++i)

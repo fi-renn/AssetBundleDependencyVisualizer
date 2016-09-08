@@ -70,8 +70,6 @@ namespace GJP.EditorToolkit
                 Vector2 nodeMin = curNode.GetPosition (EditorWindowAnchor.TopLeft);
                 Vector2 nodeMax = curNode.GetPosition (EditorWindowAnchor.BottomRight);
 
-                Debug.Log (string.Format ("{0} ({1}/{2})", curNode, nodeMin, nodeMax));
-
                 min.x = Mathf.Min (nodeMin.x, min.x);
                 min.y = Mathf.Min (nodeMin.y, min.y);
 
