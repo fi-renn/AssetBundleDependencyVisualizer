@@ -1,13 +1,15 @@
 window priority:
-- filter (currently bug in the linux editor)
-    -> bundles, include assets, types[source, prefabs, textures, audio], hidden assets
-
 - node window
-    -> base node drawing
-    -> draw asset bundle data
     -> draw dependency
-    -> implement positioning
     -> zoom
+
+- bugs:
+	- refresh is not working
+	- Scripte wipe stability
+	- spirte has no preview image
+	- deps position is wrong (should be from border instead of center)
+	- background graphic path is hardcoded
+	- assetbundle detection should also look for parent folders
 
 
 - future stuff
