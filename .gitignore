@@ -36,3 +36,5 @@ sysinfo.txt
 # assetbundles
 /[Aa]ssetBundles/
 
+# project settings are not needed here
+/[Pp]rojectSettings/
