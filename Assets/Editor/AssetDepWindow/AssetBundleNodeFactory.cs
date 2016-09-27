@@ -12,7 +12,6 @@ namespace GJP.AssetBundleDependencyVisualizer
         private AssetDataType filter;
         private Action<AssetData> assetClickCallback;
         private int controlCounter;
-        private Vector2 mapCenter;
 
         private List<AssetBundleNode> parents, childs;
         private AssetBundleNode selected;
@@ -28,7 +27,6 @@ namespace GJP.AssetBundleDependencyVisualizer
             this.primaryData = primaryData;
             this.filter = filter;
             this.assetClickCallback = assetClickCallback;
-            this.mapCenter = mapCenter;
 
             var result = new List<AssetBundleNode> ();
 

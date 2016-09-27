@@ -18,7 +18,11 @@ namespace GJP.EditorToolkit
         protected ANodeEditorPanel (P parent, EditorWindowDimension dimension)
             : base (parent, dimension)
         {            
-            this.background = AssetDatabase.LoadAssetAtPath<Texture2D> ("Assets/Editor/background.png");
+            this.background = EditorGUIUtility.Load ("NodeEditor/background.png") as Texture2D;
+            if (this.background == null)
+            {
+                this.background = Texture2D.whiteTexture;
+            }
             this.background.wrapMode = TextureWrapMode.Repeat;
             this.nodes = new List<N> ();
         }
