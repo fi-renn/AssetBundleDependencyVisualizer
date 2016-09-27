@@ -32,6 +32,11 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         #region interface to window
 
+        public void ForceRefresh ()
+        {
+            RefreshNodes ();
+        }
+
         public void ApplyFilter (AssetDataType filter)
         {
             if (this.filter != filter)

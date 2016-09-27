@@ -88,9 +88,9 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         public void RefreshBundleData ()
         {
-            //TODO fix me
+            //TODO the problem of script wipe is the filter
             this.Data = AssetBundleDepData.ReadDataFromUnity ();
-            this.listPanel.ApplyTypeFilter (this.menuBarList.Filter);
+            this.listPanel.ForceRefresh ();
             this.nodePanel.ApplyFilter (this.menuBarNode.Filter);
         }
 

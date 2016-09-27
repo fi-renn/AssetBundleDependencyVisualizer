@@ -110,8 +110,8 @@ namespace GJP.AssetBundleDependencyVisualizer
         }
 
         private bool AssignAsset (string path, AssetBundleData bundle)
-        {
-            string assignedBundleName = AssetImporter.GetAtPath (path).assetBundleName;
+        {            
+            string assignedBundleName = FindAssignedBundleName (path);
             if (string.IsNullOrEmpty (assignedBundleName) || (assignedBundleName == bundle.Name))
             {
                 // add to bundled
@@ -140,6 +140,28 @@ namespace GJP.AssetBundleDependencyVisualizer
         private static int CompareBundledAssets (AssetData data1, AssetData data2)
         {
             return data1.AssetType.CompareTo (data2.AssetType);
+        }
+
+        private static string FindAssignedBundleName (string assetPath)
+        {
+            string bundleName = string.Empty;
+            do
+            {
+                bundleName = AssetImporter.GetAtPath (assetPath).assetBundleName;
+                assetPath = GetParentPath (assetPath);       
+            } while (string.IsNullOrEmpty (bundleName) && !string.IsNullOrEmpty (assetPath));
+            return bundleName;
+        }
+
+        private static string GetParentPath (string path)
+        {
+            int index = path.LastIndexOf ("/");
+            if (index == -1)
+            {
+                return string.Empty;
+            }
+
+            return path.Remove (index);
         }
 
         #endregion

@@ -102,6 +102,11 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         #endregion
 
+        public void ForceRefresh ()
+        {
+            this.needsUpdate = true;
+        }
+
         public void ApplyTypeFilter (AssetDataType filter)
         {
             if (this.currentTypeFilter == filter)
