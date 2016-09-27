@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using GJP.EditorToolkit;
 
 
 namespace GJP.AssetBundleDependencyVisualizer
@@ -15,8 +16,6 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         private List<AssetBundleNode> parents, childs;
         private AssetBundleNode selected;
-
-        private const float MinDistance = 80f;
 
         public List<AssetBundleNode> GetNodes (AssetBundleData primaryData, AssetDataType filter, Action<AssetData> assetClickCallback, Vector2 mapCenter)
         {
@@ -35,14 +34,14 @@ namespace GJP.AssetBundleDependencyVisualizer
 
             // create nodes
             SplitNodes ();
-            selected.CenterPosition = mapCenter;
+            selected.SetPosition (EditorWindowAnchor.Center, mapCenter);
 
             result.Add (selected);
             result.AddRange (parents);
             result.AddRange (childs);
 
-            PositionNodes (parents, 180f);
-            PositionNodes (childs, 0f);
+            PositionNodes (parents, true);
+            PositionNodes (childs, false);
 
             // TODO recursive deps 
             // TODO add dep support           
@@ -75,11 +74,27 @@ namespace GJP.AssetBundleDependencyVisualizer
             return result;
         }
 
-        private void PositionNodes (List<AssetBundleNode> nodes, float startAngel)
+        private void PositionNodes (List<AssetBundleNode> nodes, bool addOnTop)
         {
             if (nodes.Count == 0)
             {
                 return;
+            }
+
+            Vector2 anchorPoint;
+            float startAngle;
+            EditorWindowAnchor nodeAnchor;
+            if (addOnTop)
+            {
+                anchorPoint = selected.GetPosition (EditorWindowAnchor.Top);
+                startAngle = 180f;
+                nodeAnchor = EditorWindowAnchor.Bottom;
+            }
+            else
+            {
+                anchorPoint = selected.GetPosition (EditorWindowAnchor.Bottom);
+                startAngle = 0f;
+                nodeAnchor = EditorWindowAnchor.Top;
             }
 
             // find max size
@@ -88,6 +103,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             {
                 maxSize = Mathf.Max (maxSize, item.GetSize ().magnitude);
             }
+
             // extra padding for low numbers
             if (nodes.Count < 3)
             {
@@ -101,9 +117,6 @@ namespace GJP.AssetBundleDependencyVisualizer
             // but we only want a half circle 
             float radius = lenght / Mathf.PI;
 
-            // keep a minimal distance
-            radius = Mathf.Max (radius, MinDistance);
-
             // We don't start at angle 0 and need to
             // count one extra
             int count = nodes.Count;
@@ -111,15 +124,15 @@ namespace GJP.AssetBundleDependencyVisualizer
             // unity calcs in radiant (180° / count)
             float stepSize = Mathf.PI / count;
 
-            startAngel = Mathf.Deg2Rad * startAngel;
+            startAngle = Mathf.Deg2Rad * startAngle;
 
             for (int i = 0; i < nodes.Count; ++i)
             {
-                float step = (stepSize * (i)) + startAngel;
+                float step = (stepSize * (i)) + startAngle;
                 step += (stepSize / 2f);
                 Vector2 position = new Vector2 (Mathf.Cos (step), Mathf.Sin (step));
                 position *= radius;
-                nodes[i].CenterPosition = position + mapCenter;
+                nodes[i].SetPosition (nodeAnchor, position + anchorPoint);
             }
         }
     }

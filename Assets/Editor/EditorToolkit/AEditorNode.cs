@@ -70,30 +70,18 @@ namespace GJP.EditorToolkit
             set { this.nodeRect.position = value; }
         }
 
-        public Vector2 CenterPosition
-        {
-            get
-            {
-                return this.nodeRect.position + (this.nodeRect.size * 0.5f);
-            }
-            set
-            {
-                this.nodeRect.position = (value - this.nodeRect.size * 0.5f);
-            }
-        }
-
         public Vector2 GetSize ()
         {
             return this.nodeRect.size;
         }
 
-        public Vector2 GetPosition (EditorWindowAnchor border)
+        public Vector2 GetPosition (EditorWindowAnchor anchor)
         {
             Vector2 size = this.nodeRect.size;
             Vector2 halfSize = size * 0.5f;
 
             Vector2 result = this.nodeRect.position;
-            switch (border)
+            switch (anchor)
             {
                 case EditorWindowAnchor.TopLeft:
                     break;
@@ -133,6 +121,54 @@ namespace GJP.EditorToolkit
                     break;
             }
             return result;
+        }
+
+        public void SetPosition (EditorWindowAnchor anchor, Vector2 newPos)
+        {
+            Vector2 size = this.nodeRect.size;
+            Vector2 halfSize = size * 0.5f;
+
+            switch (anchor)
+            {
+                case EditorWindowAnchor.TopLeft:
+                    break;
+
+                case EditorWindowAnchor.Top:
+                    newPos.x -= halfSize.x;
+                    break;
+
+                case EditorWindowAnchor.TopRight:
+                    newPos.x -= size.x;
+                    break;
+
+                case EditorWindowAnchor.Left:
+                    newPos.y -= halfSize.y;
+                    break;
+
+                case EditorWindowAnchor.Center:
+                    newPos -= halfSize;
+                    break;
+
+                case EditorWindowAnchor.Right:
+                    newPos.y -= halfSize.y;
+                    newPos.x -= size.x;
+                    break;
+
+                case EditorWindowAnchor.BottomLeft:
+                    newPos.y -= size.y;
+                    break;
+
+                case EditorWindowAnchor.Bottom:
+                    newPos.y -= size.y;
+                    newPos.x -= halfSize.x;
+                    break;
+
+                case EditorWindowAnchor.BottomRight:
+                    newPos -= size;
+                    break;
+            }
+
+            this.nodeRect.position = newPos;
         }
     }
 }

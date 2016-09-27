@@ -186,7 +186,6 @@ namespace GJP.AssetBundleDependencyVisualizer
                     continue;
                 }
 
-
                 result.Add (element);                  
             }
             return result;
