@@ -3,14 +3,12 @@ window priority:
     -> draw dependency
     -> zoom
 
+- list panel
+	-> add margin for scrollbars
+
 - bugs:
 	- refresh is not working
 	- Scripte wipe stability
-	- spirte has no preview image
-	- deps position is wrong (should be from border instead of center)
-	- background graphic path is hardcoded
-	- assetbundle detection should also look for parent folders
-
 
 - future stuff
     -> dynamic ui with min and max size
