@@ -5,12 +5,12 @@ namespace GJP.EditorToolkit
 {
     public static class NodeUtils
     {
-        public static void GetBorderPoints (IEditorPositionable start, IEditorPositionable end, out Vector3 startPos, out Vector3 endPos)
+        public static void GetBorderPoints (IEditorPositionable start, IEditorPositionable end, 
+                                            out Vector3 startPos, out Vector3 endPos)
         {
             // find direction
             Vector3 diff = end.GetPosition (EditorWindowAnchor.Center) - start.GetPosition (EditorWindowAnchor.Center);
-            //diff.Normalize ();
-            
+            //diff.Normalize ();            
             
             EditorWindowAnchor startBorder, endBorder;
             
@@ -95,6 +95,59 @@ namespace GJP.EditorToolkit
             }                
 
             return new Rect (Vector2.zero, max);         
+        }
+
+        public static void GetClosestCrossAnchorPoints (IEditorPositionable parent, IEditorPositionable child, 
+                                                        out Vector2 start, out Vector2 end)
+        {
+            // diff vector
+            Vector2 diff = child.GetPosition (EditorWindowAnchor.Center) - parent.GetPosition (EditorWindowAnchor.Center);
+            EditorWindowAnchor[] checkList = new EditorWindowAnchor[4];
+
+            // axis check
+            if (diff.x > 0)
+            {
+                checkList [0] = EditorWindowAnchor.Right;
+                checkList [2] = EditorWindowAnchor.Left;
+            }
+            else
+            {
+                checkList [0] = EditorWindowAnchor.Left;
+                checkList [2] = EditorWindowAnchor.Right;
+            }
+
+            if (diff.y > 0)
+            {
+                checkList [1] = EditorWindowAnchor.Bottom;
+                checkList [3] = EditorWindowAnchor.Top;
+            }
+            else
+            {
+                checkList [1] = EditorWindowAnchor.Top;
+                checkList [3] = EditorWindowAnchor.Bottom;
+            }
+
+            int closeIndex1 = 0;
+            int closeIndex2 = 2;
+            float min = float.MaxValue;
+            // check anchor points
+            for (int i = 0; i < 2; ++i)
+            {
+                for (int t = 2; t < 4; ++t)
+                {
+                    Vector2 testDiff = child.GetPosition (checkList [t]) - parent.GetPosition (checkList [i]);
+                    float testValue = testDiff.sqrMagnitude;
+                    if (testValue < min)
+                    {
+                        min = testValue;
+                        closeIndex1 = i;
+                        closeIndex2 = t;
+                    }
+                }
+            }
+
+            start = parent.GetPosition (checkList [closeIndex1]);
+            end = child.GetPosition (checkList [closeIndex2]);
         }
     }
 }

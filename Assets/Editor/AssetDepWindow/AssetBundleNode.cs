@@ -16,6 +16,8 @@ namespace GJP.AssetBundleDependencyVisualizer
         private GUIStyle assetStyle;
         private Vector2 buttonSize;
 
+        public AssetBundleData Data { get { return data; } }
+
         private const float ButtonHeight = 20f;
 
         public AssetBundleNode (int controlId, AssetBundleData data, AssetDataType filter, AssetBundleNoteRelationship relation)
@@ -38,11 +40,11 @@ namespace GJP.AssetBundleDependencyVisualizer
 
             for (int i = 0; i < this.toDraw.Count; ++i)
             {
-                if (GUI.Button (buttonRect, this.toDraw[i]))
+                if (GUI.Button (buttonRect, this.toDraw [i]))
                 {
                     if (this.AssetClicked != null)
                     {
-                        this.AssetClicked (this.filteredAssets[i]);
+                        this.AssetClicked (this.filteredAssets [i]);
                     }
                 }
                 buttonRect.y += buttonSize.y;

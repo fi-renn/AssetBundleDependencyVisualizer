@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using GJP.EditorToolkit;
 
-
 namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleNodeFactory
@@ -41,8 +40,7 @@ namespace GJP.AssetBundleDependencyVisualizer
             PositionNodes (parents, true);
             PositionNodes (childs, false);
 
-            // TODO recursive deps 
-            // TODO add dep support           
+            // TODO recursive deps        
 
             return result;
         }
@@ -130,7 +128,7 @@ namespace GJP.AssetBundleDependencyVisualizer
                 step += (stepSize / 2f);
                 Vector2 position = new Vector2 (Mathf.Cos (step), Mathf.Sin (step));
                 position *= radius;
-                nodes[i].SetPosition (nodeAnchor, position + anchorPoint);
+                nodes [i].SetPosition (nodeAnchor, position + anchorPoint);
             }
         }
     }
