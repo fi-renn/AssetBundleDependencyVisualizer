@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 namespace GJP.EditorToolkit
 {
-    public abstract class ANodeEditorPanel<P,N> : AEditorWindowPanel<P> 
+    public abstract class ANodeEditorPanel<P,N,G> : AEditorWindowPanel<P> 
         where P : APanelEditorWindow<P>
         where N : AEditorNode
+        where G : AEditorNodeGraph
     {
         protected Texture2D background;
         protected List<N> nodes;
+        protected List<G> graphs;
         protected Vector2 scrollPosition;
 
         private Rect scrollRect;
@@ -25,6 +27,7 @@ namespace GJP.EditorToolkit
             }
             this.background.wrapMode = TextureWrapMode.Repeat;
             this.nodes = new List<N> ();
+            this.graphs = new List<G> ();
         }
 
         protected override void DrawContent ()
@@ -37,6 +40,14 @@ namespace GJP.EditorToolkit
 
             this.scrollPosition = GUI.BeginScrollView (this.drawRect, this.scrollPosition, this.scrollRect);
 
+            // draw dependencies
+            for (int i = 0; i < this.graphs.Count; ++i)
+            {
+                this.graphs[i].Draw ();
+            }
+
+
+            // draw nodes
             this.parentWindow.BeginWindows ();
             for (int i = 0; i < this.nodes.Count; ++i)
             {
@@ -54,9 +65,23 @@ namespace GJP.EditorToolkit
             this.scrollRect = NodeUtils.PutNodesOnRect (this.nodes);
         }
 
+        protected void ApplyNewGraphs (List<G> newGraphs)
+        {
+            this.graphs.Clear ();
+            this.graphs.AddRange (newGraphs);
+            foreach (var item in this.graphs)
+            {
+                item.UpdateCachedPositions ();
+            }
+        }
+
         protected void UpdateScrollRect ()
         {
             this.scrollRect = NodeUtils.PutNodesOnRect (this.nodes);
+            foreach (var item in this.graphs)
+            {
+                item.UpdateCachedPositions ();
+            }
         }
 
         protected override void OnRectRecalculated ()

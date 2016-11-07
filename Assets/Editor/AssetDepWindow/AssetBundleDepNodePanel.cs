@@ -4,16 +4,19 @@ using GJP.EditorToolkit;
 namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleDepNodePanel : ANodeEditorPanel<DependencyWindow,
-                                            AssetBundleNode>
+                                            AssetBundleNode, DirectNodeGraph>
     {
-        private readonly AssetBundleNodeFactory factory;
+        private readonly AssetBundleNodeFactory nodeFactory;
+        private readonly AssetBundleNodeGraphFactory<DirectNodeGraph> graphFactory;
         private AssetDataType filter;
         private AssetBundleData curBundle;
 
         public AssetBundleDepNodePanel (DependencyWindow parent, EditorWindowDimension dimension)
             : base (parent, dimension)
         {      
-            this.factory = new AssetBundleNodeFactory ();
+            this.nodeFactory = new AssetBundleNodeFactory ();
+            this.graphFactory = new AssetBundleNodeGraphFactory<DirectNodeGraph> (
+                (p, c) => new DirectNodeGraph (p, c));
         }
 
         protected override Color DebugColor
@@ -66,7 +69,8 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         private void RefreshNodes ()
         {
-            ApplyNewNodes (factory.GetNodes (this.curBundle, this.filter, AssetClicked, this.drawRect.center));              
+            ApplyNewNodes (nodeFactory.GetNodes (this.curBundle, this.filter, AssetClicked, this.drawRect.center));              
+            ApplyNewGraphs (graphFactory.GetVisibleGraphs (this.nodes));
         }
     }
 }  

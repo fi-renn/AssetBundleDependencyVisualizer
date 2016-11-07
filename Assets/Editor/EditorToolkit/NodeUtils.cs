@@ -98,7 +98,7 @@ namespace GJP.EditorToolkit
         }
 
         public static void GetClosestCrossAnchorPoints (IEditorPositionable parent, IEditorPositionable child, 
-                                                        out Vector2 start, out Vector2 end)
+                                                        out EditorWindowAnchor start, out EditorWindowAnchor end)
         {
             // diff vector
             Vector2 diff = child.GetPosition (EditorWindowAnchor.Center) - parent.GetPosition (EditorWindowAnchor.Center);
@@ -107,24 +107,24 @@ namespace GJP.EditorToolkit
             // axis check
             if (diff.x > 0)
             {
-                checkList [0] = EditorWindowAnchor.Right;
-                checkList [2] = EditorWindowAnchor.Left;
+                checkList[0] = EditorWindowAnchor.Right;
+                checkList[2] = EditorWindowAnchor.Left;
             }
             else
             {
-                checkList [0] = EditorWindowAnchor.Left;
-                checkList [2] = EditorWindowAnchor.Right;
+                checkList[0] = EditorWindowAnchor.Left;
+                checkList[2] = EditorWindowAnchor.Right;
             }
 
             if (diff.y > 0)
             {
-                checkList [1] = EditorWindowAnchor.Bottom;
-                checkList [3] = EditorWindowAnchor.Top;
+                checkList[1] = EditorWindowAnchor.Bottom;
+                checkList[3] = EditorWindowAnchor.Top;
             }
             else
             {
-                checkList [1] = EditorWindowAnchor.Top;
-                checkList [3] = EditorWindowAnchor.Bottom;
+                checkList[1] = EditorWindowAnchor.Top;
+                checkList[3] = EditorWindowAnchor.Bottom;
             }
 
             int closeIndex1 = 0;
@@ -135,7 +135,7 @@ namespace GJP.EditorToolkit
             {
                 for (int t = 2; t < 4; ++t)
                 {
-                    Vector2 testDiff = child.GetPosition (checkList [t]) - parent.GetPosition (checkList [i]);
+                    Vector2 testDiff = child.GetPosition (checkList[t]) - parent.GetPosition (checkList[i]);
                     float testValue = testDiff.sqrMagnitude;
                     if (testValue < min)
                     {
@@ -146,8 +146,10 @@ namespace GJP.EditorToolkit
                 }
             }
 
-            start = parent.GetPosition (checkList [closeIndex1]);
-            end = child.GetPosition (checkList [closeIndex2]);
+            start = checkList[closeIndex1];
+            end = checkList[closeIndex2];
         }
+    
+        
     }
 }

@@ -8,7 +8,14 @@ namespace GJP.AssetBundleDependencyVisualizer
     {
         public delegate T GraphCreationDel (IEditorPositionable parent, IEditorPositionable child);
 
-        public List<T> GetVisibleGraphs (List<AssetBundleNode> visibleNodes, GraphCreationDel del)
+        private GraphCreationDel del;
+
+        public AssetBundleNodeGraphFactory (GraphCreationDel del)
+        {
+            this.del = del;
+        }
+
+        public List<T> GetVisibleGraphs (List<AssetBundleNode> visibleNodes)
         {
             List<T> result = new List<T> ();
 
