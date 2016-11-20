@@ -4,19 +4,19 @@ using GJP.EditorToolkit;
 namespace GJP.AssetBundleDependencyVisualizer
 {
     public class AssetBundleDepNodePanel : ANodeEditorPanel<DependencyWindow,
-                                            AssetBundleNode, DirectNodeGraph>
+                                            AssetBundleNode, BezierNodeGraph>
     {
         private readonly AssetBundleNodeFactory nodeFactory;
-        private readonly AssetBundleNodeGraphFactory<DirectNodeGraph> graphFactory;
-        private AssetDataType filter;
+        private readonly AssetBundleNodeGraphFactory<BezierNodeGraph> graphFactory;
+        private AssetDataType filter = AssetDataTypeUtility.DefaultFilter;
         private AssetBundleData curBundle;
 
         public AssetBundleDepNodePanel (DependencyWindow parent, EditorWindowDimension dimension)
             : base (parent, dimension)
         {      
             this.nodeFactory = new AssetBundleNodeFactory ();
-            this.graphFactory = new AssetBundleNodeGraphFactory<DirectNodeGraph> (
-                (p, c) => new DirectNodeGraph (p, c));
+            this.graphFactory = new AssetBundleNodeGraphFactory<BezierNodeGraph> (
+                (p, c) => new BezierNodeGraph (p, c));
         }
 
         protected override Color DebugColor

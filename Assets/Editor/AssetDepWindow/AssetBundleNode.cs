@@ -16,6 +16,8 @@ namespace GJP.AssetBundleDependencyVisualizer
         private GUIStyle assetStyle;
         private Vector2 buttonSize;
 
+        public AssetBundleNoteRelationship RelationShip { get; private set; }
+
         public AssetBundleData Data { get { return data; } }
 
         private const float ButtonHeight = 20f;
@@ -40,11 +42,11 @@ namespace GJP.AssetBundleDependencyVisualizer
 
             for (int i = 0; i < this.toDraw.Count; ++i)
             {
-                if (GUI.Button (buttonRect, this.toDraw [i]))
+                if (GUI.Button (buttonRect, this.toDraw[i]))
                 {
                     if (this.AssetClicked != null)
                     {
-                        this.AssetClicked (this.filteredAssets [i]);
+                        this.AssetClicked (this.filteredAssets[i]);
                     }
                 }
                 buttonRect.y += buttonSize.y;
@@ -91,6 +93,7 @@ namespace GJP.AssetBundleDependencyVisualizer
 
         public void SetRelationShip (AssetBundleNoteRelationship relation)
         {
+            this.RelationShip = relation;
             switch (relation)
             {
                 case AssetBundleNoteRelationship.Parent:

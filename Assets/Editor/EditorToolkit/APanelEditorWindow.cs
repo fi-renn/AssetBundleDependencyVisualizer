@@ -6,20 +6,24 @@ namespace GJP.EditorToolkit
 {
     public abstract class APanelEditorWindow<T> : EditorWindow where T : APanelEditorWindow<T>
     {
-        protected List<AEditorWindowPanel<T>> panels = new List<AEditorWindowPanel<T>>();
+        protected List<AEditorWindowPanel<T>> panels = new List<AEditorWindowPanel<T>> ();
 
         protected Rect oldPosition;
         [System.NonSerialized]
         private bool isSetup;
 
-        protected void OnGUI()
+        protected void OnGUI ()
         {
             if (!this.isSetup)
             {
                 this.panels.Clear ();
-                InitPanels ();
-                RecalculateLayout ();
-                isSetup = true;
+                if (Event.current.type == EventType.Repaint)
+                {
+                    InitPanels ();
+                    RecalculateLayout ();
+                    isSetup = true;
+                }
+                return;
             }
 
             if (Event.current.type == EventType.Layout && this.oldPosition != this.position)
@@ -35,13 +39,13 @@ namespace GJP.EditorToolkit
             AdditonOnGUI ();
         }
 
-        protected virtual void AdditonOnGUI()
+        protected virtual void AdditonOnGUI ()
         {
         }
 
-        protected abstract void InitPanels();
+        protected abstract void InitPanels ();
 
-        protected void RecalculateLayout()
+        protected void RecalculateLayout ()
         {
             this.oldPosition = this.position;
             for (int i = 0; i < panels.Count; i++)

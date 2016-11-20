@@ -8,7 +8,7 @@ namespace GJP.AssetBundleDependencyVisualizer
     {
         #region member
 
-        protected AssetDataType currentTypeFilter;
+        protected AssetDataType currentTypeFilter = AssetDataTypeUtility.DefaultFilter;
         protected string currentSearchFilter;
         protected bool needsUpdate = true;
 

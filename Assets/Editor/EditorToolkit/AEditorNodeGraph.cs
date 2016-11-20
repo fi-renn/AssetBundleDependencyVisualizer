@@ -17,6 +17,12 @@ namespace GJP.EditorToolkit
             NodeUtils.GetClosestCrossAnchorPoints (parent, child, out parentAnchor, out childAnchor);
         }
 
+        public virtual void SetAnchorPoints (EditorWindowAnchor parentAnchor, EditorWindowAnchor childAnchor)
+        {
+            this.parentAnchor = parentAnchor;
+            this.childAnchor = childAnchor;
+        }
+
         public void UpdateCachedPositions ()
         {
             startPoint = this.parent.GetPosition (parentAnchor);

@@ -1,4 +1,6 @@
-﻿namespace GJP.EditorToolkit
+﻿using UnityEditor;
+
+namespace GJP.EditorToolkit
 {
     public class DirectNodeGraph : AEditorNodeGraph
     {
@@ -9,7 +11,7 @@
 
         public override void Draw ()
         {
-            throw new System.NotImplementedException ();
+            Handles.DrawLine (this.startPoint, this.endPoint);
         }
     }
 }

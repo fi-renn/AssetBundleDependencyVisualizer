@@ -97,6 +97,57 @@ namespace GJP.EditorToolkit
             return new Rect (Vector2.zero, max);         
         }
 
+        public static void GetBestVisualAnchorPoints (IEditorPositionable center, IEditorPositionable leaf,
+                                                      out EditorWindowAnchor start, out EditorWindowAnchor end)
+        {
+            Vector2 diff = center.GetPosition (EditorWindowAnchor.Center) - leaf.GetPosition (EditorWindowAnchor.Center);
+
+            const float border = 50f;
+
+            float angle = Vector2.Angle (Vector2.right, diff.normalized);
+            float diffToSquareAngle = Mathf.Abs (90f - angle);
+
+            if (diff.y > 0f)
+            {
+                // top 
+                end = EditorWindowAnchor.Top;
+                if (diffToSquareAngle < border)
+                {
+                    start = EditorWindowAnchor.Bottom;
+                }
+                else
+                {
+                    if (angle < 90f)
+                    {
+                        start = EditorWindowAnchor.Right;
+                    }
+                    else
+                    {
+                        start = EditorWindowAnchor.Left;
+                    }
+                }
+            }
+            else
+            {
+                start = EditorWindowAnchor.Bottom;
+                if (diffToSquareAngle < border)
+                {
+                    end = EditorWindowAnchor.Top;
+                }
+                else
+                {
+                    if (angle < 90f)
+                    {
+                        end = EditorWindowAnchor.Right;
+                    }
+                    else
+                    {
+                        end = EditorWindowAnchor.Left;
+                    }
+                }
+            }
+        }
+
         public static void GetClosestCrossAnchorPoints (IEditorPositionable parent, IEditorPositionable child, 
                                                         out EditorWindowAnchor start, out EditorWindowAnchor end)
         {
