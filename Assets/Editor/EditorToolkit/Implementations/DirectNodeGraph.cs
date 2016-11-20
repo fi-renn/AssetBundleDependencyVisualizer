@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 namespace GJP.EditorToolkit
 {
@@ -11,7 +12,10 @@ namespace GJP.EditorToolkit
 
         public override void Draw ()
         {
+            Color oldCol = Handles.color;
+            Handles.color = this.lineColor;
             Handles.DrawLine (this.startPoint, this.endPoint);
+            Handles.color = oldCol;
         }
     }
 }

@@ -25,6 +25,9 @@ namespace GJP.EditorToolkit
 
         public override void Draw ()
         {
+            Color oldCol = Handles.color;
+            Handles.color = this.lineColor;
+
             Vector3 startTangent = this.startPoint + startTagentOffset;
             Vector3 endTangent = this.endPoint + endTangentOffset;
 
@@ -33,11 +36,27 @@ namespace GJP.EditorToolkit
                 this.endPoint,
                 startTangent,
                 endTangent,
-                Color.white,
+                this.lineColor,
                 null,
                 5f);
+
+            float arrowAngle = 70f;
+
+            Vector3 arrowStart = Quaternion.Euler (0, 0, -(arrowAngle * 0.5f)) * this.childAnchor.ToDirection ();
+
+            Handles.DrawSolidArc (
+                this.endPoint,
+                Vector3.forward,
+                arrowStart,
+                arrowAngle,
+                15f);
+
+            Handles.color = oldCol;
+
 //            Handles.DrawLine (this.startPoint, this.endPoint);
         }
+
+
     }
 }
 

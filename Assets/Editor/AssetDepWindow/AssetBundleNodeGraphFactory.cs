@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GJP.EditorToolkit;
+using UnityEngine;
 
 namespace GJP.AssetBundleDependencyVisualizer
 {
@@ -29,6 +30,7 @@ namespace GJP.AssetBundleDependencyVisualizer
                         T graph = del (item, childNode);
                         // even the parent has it child we draw from center to leaf
                         result.Add (graph);
+                        Color lineCol = Color.cyan;
                         if (item.RelationShip == AssetBundleNoteRelationship.Selected ||
                             childNode.RelationShip == AssetBundleNoteRelationship.Selected)
                         {
@@ -37,13 +39,16 @@ namespace GJP.AssetBundleDependencyVisualizer
                             if (item.RelationShip == AssetBundleNoteRelationship.Selected)
                             {
                                 NodeUtils.GetBestVisualAnchorPoints (item, childNode, out parentPoint, out childPoint);
+                                lineCol = Color.yellow;
                             }
                             else
                             {
                                 NodeUtils.GetBestVisualAnchorPoints (childNode, item, out parentPoint, out childPoint);
+                                lineCol = Color.gray;
                             }
-                            graph.SetAnchorPoints (parentPoint, childPoint);
-                        }
+                            graph.SetAnchorPoints (parentPoint, childPoint);   
+                        }                                               
+                        graph.SetLineColor (lineCol);
                     }
                 }
             }

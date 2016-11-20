@@ -31,6 +31,7 @@ namespace GJP.AssetBundleDependencyVisualizer
 
             // create nodes
             SplitNodes ();
+            FilterDoubles ();
             selected.SetPosition (EditorWindowAnchor.Center, mapCenter);
 
             result.Add (selected);
@@ -61,6 +62,21 @@ namespace GJP.AssetBundleDependencyVisualizer
                 childs.Add (CreateNode (childBundle, AssetBundleNoteRelationship.Child));
             }
         }
+
+        private void FilterDoubles ()
+        {
+            foreach (var child in childs)
+            {
+                for (int i = parents.Count - 1; i >= 0; --i)
+                {
+                    if (parents[i].Data.Name == child.Data.Name)
+                    {
+                        parents.RemoveAt (i);
+                    }
+                }
+            }
+        }
+
 
         private AssetBundleNode CreateNode (AssetBundleData data, AssetBundleNoteRelationship relation)
         {
@@ -128,7 +144,7 @@ namespace GJP.AssetBundleDependencyVisualizer
                 step += (stepSize / 2f);
                 Vector2 position = new Vector2 (Mathf.Cos (step), Mathf.Sin (step));
                 position *= radius;
-                nodes [i].SetPosition (nodeAnchor, position + anchorPoint);
+                nodes[i].SetPosition (nodeAnchor, position + anchorPoint);
             }
         }
     }
